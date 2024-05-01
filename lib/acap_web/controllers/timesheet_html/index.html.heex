@@ -39,10 +39,10 @@
     <div class="sr-only">
       <.link navigate={~p"/timesheets/#{timesheet}"}>Show</.link>
     </div>
-    <.link :if={@current_user.admin && timesheet.status != :accpeted} navigate={~p"/timesheets/#{timesheet}/edit"}>Edit</.link>
+    <.link :if={@current_user.admin || timesheet.status != :accpeted} navigate={~p"/timesheets/#{timesheet}/edit"}>Edit</.link>
   </:action>
   <:action :let={timesheet}>
-    <.link :if={@current_user.admin && timesheet.status != :accpeted}  href={~p"/timesheets/#{timesheet}"} method="delete" data-confirm="Are you sure?">
+    <.link :if={@current_user.admin || timesheet.status != :accpeted}  href={~p"/timesheets/#{timesheet}"} method="delete" data-confirm="Are you sure?">
       Delete
     </.link>
   </:action>

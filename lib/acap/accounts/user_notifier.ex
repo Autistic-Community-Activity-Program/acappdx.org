@@ -8,7 +8,7 @@ defmodule Acap.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Acap", "contact@example.com"})
+      |> from({"ACAP", "no-reply@acappdx.org"})
       |> subject(subject)
       |> text_body(body)
 

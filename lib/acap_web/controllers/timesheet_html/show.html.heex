@@ -2,7 +2,7 @@
   Timesheet <%= @timesheet.id %>
   <:subtitle>This is a timesheet record from your database.</:subtitle>
   <:actions>
-    <.link :if={@current_user.admin && @timesheet.status != :accpeted}  href={~p"/timesheets/#{@timesheet}/edit"}>
+    <.link :if={@current_user.admin || @timesheet.status != :accpeted}  href={~p"/timesheets/#{@timesheet}/edit"}>
       <.button>Edit timesheet</.button>
     </.link>
   </:actions>
