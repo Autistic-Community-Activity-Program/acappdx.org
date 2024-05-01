@@ -1,0 +1,49 @@
+<.header>
+  Listing Timesheets
+  <:actions>
+    <.link href={~p"/timesheets/new"}>
+      <.button>New Timesheet</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="timesheets" rows={@timesheets} row_click={&(~p"/timesheets/#{&1}")}>
+  <:col :let={timesheet} label="Week starting"><%= timesheet.week_starting |> day_of_the_week_formated %></:col>
+  <:col :let={timesheet} label="Status"><%= timesheet.status %></:col>
+  <:col :let={timesheet} label="Account" >
+    <%= timesheet.user.email %>
+  </:col>
+  <:col :let={timesheet} label="S" >
+    <%= timesheet.entries |> Enum.at(0) |> Map.get(:hours) %>
+  </:col>
+  <:col :let={timesheet} label="M">
+    <%= timesheet.entries |> Enum.at(1) |> Map.get(:hours) %>
+  </:col>
+  <:col :let={timesheet} label="T">
+    <%= timesheet.entries |> Enum.at(2) |> Map.get(:hours) %>
+  </:col>
+  <:col :let={timesheet} label="W">
+    <%= timesheet.entries |> Enum.at(3) |> Map.get(:hours) %>
+  </:col>
+  <:col :let={timesheet} label="T">
+    <%= timesheet.entries |> Enum.at(4) |> Map.get(:hours) %>
+  </:col>
+  <:col :let={timesheet} label="F">
+    <%= timesheet.entries |> Enum.at(5) |> Map.get(:hours) %>
+  </:col>
+  <:col :let={timesheet} label="S">
+    <%= timesheet.entries |> Enum.at(6) |> Map.get(:hours) %>
+  </:col>
+
+  <:action :let={timesheet}>
+    <div class="sr-only">
+      <.link navigate={~p"/timesheets/#{timesheet}"}>Show</.link>
+    </div>
+    <.link :if={@current_user.admin && timesheet.status != :accpeted} navigate={~p"/timesheets/#{timesheet}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={timesheet}>
+    <.link :if={@current_user.admin && timesheet.status != :accpeted}  href={~p"/timesheets/#{timesheet}"} method="delete" data-confirm="Are you sure?">
+      Delete
+    </.link>
+  </:action>
+</.table>

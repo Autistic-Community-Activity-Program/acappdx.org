@@ -1,0 +1,18 @@
+<.header>
+  Timesheet <%= @timesheet.id %>
+  <:subtitle>This is a timesheet record from your database.</:subtitle>
+  <:actions>
+    <.link :if={@current_user.admin && @timesheet.status != :accpeted}  href={~p"/timesheets/#{@timesheet}/edit"}>
+      <.button>Edit timesheet</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Week starting"><%= @timesheet.week_starting %></:item>
+  <:item title="Status"><%= @timesheet.status %></:item>
+  <:item title="Account"><%= @timesheet.user.email %></:item>
+  <:item :for={%{day: day, hours: hours} <- @timesheet.entries} title="Entries"><%= day_of_the_week_formated(day)  %> hours: <%= hours %></:item>
+</.list>
+
+<.back navigate={~p"/timesheets"}>Back to timesheets</.back>

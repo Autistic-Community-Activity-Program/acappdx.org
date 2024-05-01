@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "watch_js": "esbuild js/app.js js/timesheet.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --sourcemap=inline  --watch",
+    "watch_css": "tailwindcss -i css/app.css -o ../priv/static/assets/app.css --watch",
+    "build_js": "esbuild js/app.js js/timesheet.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*  --minify",
+    "build_css": "tailwindcss -i css/app.css -o ../priv/static/assets/app.css  --minify"
+
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "autoprefixer": "^10.4.19",
+    "esbuild": "0.20.2",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3"
+  },
+  "dependencies": {
+    "date-fns": "^3.6.0",
+    "phoenix_html": "^4.1.1"
+  }
+}
