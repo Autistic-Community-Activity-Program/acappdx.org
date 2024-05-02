@@ -35,25 +35,25 @@
     <%= timesheet.user.email %>
   </:col>
   <:col :let={timesheet} label="S" >
-    <%= timesheet.entries |> Enum.at(0) |> Map.get(:hours) %>
+    <.cel_shader hours={timesheet.entries |> Enum.at(0) |> Map.get(:hours)} />
   </:col>
   <:col :let={timesheet} label="M">
-    <%= timesheet.entries |> Enum.at(1) |> Map.get(:hours) %>
+    <.cel_shader hours={timesheet.entries |> Enum.at(1) |> Map.get(:hours)} />
   </:col>
   <:col :let={timesheet} label="T">
-    <%= timesheet.entries |> Enum.at(2) |> Map.get(:hours) %>
+    <.cel_shader hours={timesheet.entries |> Enum.at(2) |> Map.get(:hours)} />
   </:col>
   <:col :let={timesheet} label="W">
-    <%= timesheet.entries |> Enum.at(3) |> Map.get(:hours) %>
+    <.cel_shader hours={timesheet.entries |> Enum.at(3) |> Map.get(:hours)} />
   </:col>
   <:col :let={timesheet} label="T">
-    <%= timesheet.entries |> Enum.at(4) |> Map.get(:hours) %>
+    <.cel_shader hours={timesheet.entries |> Enum.at(4) |> Map.get(:hours)} />
   </:col>
   <:col :let={timesheet} label="F">
-    <%= timesheet.entries |> Enum.at(5) |> Map.get(:hours) %>
+    <.cel_shader hours={timesheet.entries |> Enum.at(5) |> Map.get(:hours)} />
   </:col>
   <:col :let={timesheet} label="S">
-    <%= timesheet.entries |> Enum.at(6) |> Map.get(:hours) %>
+    <.cel_shader hours={timesheet.entries |> Enum.at(6) |> Map.get(:hours)} />
   </:col>
 
   <:action :let={timesheet}>

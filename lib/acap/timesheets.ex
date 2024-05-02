@@ -21,6 +21,7 @@ defmodule Acap.Timesheets do
     query =
       from t in Timesheet,
         select: t,
+        order_by: [desc: t.week_starting],
         preload: [:user]
 
     Repo.all(query)
@@ -32,6 +33,7 @@ defmodule Acap.Timesheets do
       from t in Timesheet,
         where: t.user_id == ^user_id,
         select: t,
+        order_by: [desc: t.week_starting],
         preload: [:user]
 
     Repo.all(query)
@@ -65,7 +67,7 @@ defmodule Acap.Timesheets do
   end
 
   # Admins can get any for edits
-  def get_timesheet!(id, %{id: user_id, admin: true}, :edit) do
+  def get_timesheet!(id, %{admin: true}, :edit) do
     query =
       from t in Timesheet,
         where: t.id == ^id,
