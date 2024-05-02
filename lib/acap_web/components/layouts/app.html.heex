@@ -1,8 +1,10 @@
 <.header_nav current_user={@current_user} />
 
-<main class="px-4 sm:px-6 lg:px-8 py-40">
+<main class="px-4 sm:px-6 lg:px-8 pt-40">
   <div class="mx-auto max-w-7xl">
     <.flash_group flash={@flash} />
     <%= @inner_content %>
   </div>
 </main>
+
+<.footer />

@@ -22,11 +22,13 @@
 
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-7 gap-4">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     <.inputs_for :let={fp} field={f[:entries]}>
       <div id={fp.id} class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
         <span id={fp.id <> "_label"}><%= day_of_the_week_formated(fp.params["day"] || fp.data.day) %></span>
         <.input field={fp[:hours]} label="Hours:" step="0.25" type="number" min="0" max="10"/>
+        <.input field={fp[:notes]} type="textarea" label="Notes:"/>
+
         <.input field={fp[:day]} type="hidden" />
       </div>
     </.inputs_for>
