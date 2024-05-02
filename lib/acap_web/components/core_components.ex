@@ -627,51 +627,50 @@ defmodule AcapWeb.CoreComponents do
 
   def status(%{status: :rejected} = assigns) do
     ~H"""
-    <span class="inline-flex items-center rounded-md bg-red-400/10 px-2 py-1 text-xs font-medium text-red-400 ring-1 ring-inset ring-red-400/20">
+    <span class="inline-flex items-center rounded-md bg-red-400/10 px-2 py-1 text-xs font-medium text-red-800 ring-1 ring-inset ring-red-400/20">
       Rejected
     </span>
     """
   end
 
-
   def cel_shader(%{hours: hours} = assigns) when hours == 0 do
     ~H"""
-      <span class="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-800 ring-1 ring-inset ring-zinc-600/20"><%= hours %></span>
+      <span class="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-thin text-zinc-800 ring-1 ring-inset ring-zinc-600/20"><%= @hours %></span>
     """
   end
   def cel_shader(%{hours: hours} = assigns) when hours <= 2 do
     ~H"""
-      <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-600 ring-1 ring-inset ring-yellow-500/20"><%= hours %></span>
+      <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs  text-yellow-600 ring-1 ring-inset ring-yellow-500/20"><%= @hours %></span>
     """
   end
   def cel_shader(%{hours: hours} = assigns) when hours <= 3 do
     ~H"""
-      <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-800 ring-1 ring-inset ring-green-600/20"><%= hours %></span>
+      <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs  text-green-800 ring-1 ring-inset ring-green-600/20"><%= @hours %></span>
     """
   end
   def cel_shader(%{hours: hours} = assigns) when hours <= 4 do
     ~H"""
-      <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-800 ring-1 ring-inset ring-blue-600/20"><%= hours %></span>
+      <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-800 ring-1 ring-inset ring-blue-600/20"><%= @hours %></span>
     """
   end
   def cel_shader(%{hours: hours} = assigns) when hours <= 5 do
     ~H"""
-      <span class="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-800 ring-1 ring-inset ring-indigo-600/20"><%= hours %></span>
+      <span class="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-800 ring-1 ring-inset ring-indigo-600/20"><%= @hours %></span>
     """
   end
   def cel_shader(%{hours: hours} = assigns) when hours <= 6 do
     ~H"""
-      <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20"><%= hours %></span>
+      <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20"><%= @hours %></span>
     """
   end
   def cel_shader(%{hours: hours} = assigns) when hours <= 8 do
     ~H"""
-      <span class="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-800 ring-1 ring-inset ring-pink-600/20"><%= hours %></span>
+      <span class="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-800 ring-1 ring-inset ring-pink-600/20"><%= @hours %></span>
     """
   end
   def cel_shader(%{hours: hours} = assigns) when hours > 8 do
     ~H"""
-      <span class="inline-flex items-center rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-900 ring-1 ring-inset ring-red-600"><%= hours %></span>
+      <span class="inline-flex items-center rounded-md bg-red-100 px-2 py-1 text-xs font-bold text-red-600 ring-1 ring-inset ring-red-600"><%= @hours %></span>
     """
   end
 

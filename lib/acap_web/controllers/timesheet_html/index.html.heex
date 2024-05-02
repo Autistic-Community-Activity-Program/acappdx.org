@@ -1,21 +1,32 @@
+<dl
+  :if={@current_user.admin}
+  class="mb-12 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4"
+>
+  <div class="flex flex-col bg-gray-400/5 p-8">
+    <dt class="text-sm font-semibold leading-6 text-gray-600">Timesheets waiting for review</dt>
+    <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">
+      <%= @total_pending_timesheets %>
+    </dd>
+  </div>
 
+  <div class="flex flex-col bg-gray-400/5 p-8">
+    <dt class="text-sm font-semibold leading-6 text-gray-600">Total hours pending approval</dt>
+    <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">
+      <%= @total_pending_hours %>
+    </dd>
+  </div>
+  <div class="flex flex-col bg-gray-400/5 p-8">
+    <dt class="text-sm font-semibold leading-6 text-gray-600">
+      Total aproved hours for current week
+    </dt>
+    <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">0</dd>
+  </div>
 
-<dl :if={@current_user.admin} class="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-4 mb-20">
-  <div class="mx-auto flex max-w-xs flex-col gap-y-4">
-    <dt class="text-base leading-7 text-gray-600">Timesheets waiting for review</dt>
-    <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl"><%= @total_pending_timesheets %></dd>
-  </div>
-  <div class="mx-auto flex max-w-xs flex-col gap-y-4">
-    <dt class="text-base leading-7 text-gray-600">Total hours pending approval</dt>
-    <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl"><%= @total_pending_hours %></dd>
-  </div>
-  <div class="mx-auto flex max-w-xs flex-col gap-y-4">
-    <dt class="text-base leading-7 text-gray-600">Total aproved hours for current week</dt>
-    <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">0</dd>
-  </div>
-  <div class="mx-auto flex max-w-xs flex-col gap-y-4">
-    <dt class="text-base leading-7 text-gray-600">All approved hours total</dt>
-    <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl"><%= @total_accepted_hours %></dd>
+  <div class="flex flex-col bg-gray-400/5 p-8">
+    <dt class="text-sm font-semibold leading-6 text-gray-600">All approved hours total</dt>
+    <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">
+      <%= @total_accepted_hours %>
+    </dd>
   </div>
 </dl>
 
@@ -28,13 +39,15 @@
   </:actions>
 </.header>
 
-<.table id="timesheets" rows={@timesheets} row_click={&(~p"/timesheets/#{&1}")}>
-  <:col :let={timesheet} label="Week starting"><.current_week_styling week_starting={timesheet.week_starting}/></:col>
-  <:col :let={timesheet} label="Status"><.status status={timesheet.status}/></:col>
-  <:col :if={@current_user.admin} :let={timesheet} label="Account" >
+<.table id="timesheets" rows={@timesheets} row_click={&~p"/timesheets/#{&1}"}>
+  <:col :let={timesheet} label="Week starting">
+    <.current_week_styling week_starting={timesheet.week_starting} />
+  </:col>
+  <:col :let={timesheet} label="Status"><.status status={timesheet.status} /></:col>
+  <:col :let={timesheet} :if={@current_user.admin} label="Account">
     <%= timesheet.user.email %>
   </:col>
-  <:col :let={timesheet} label="S" >
+  <:col :let={timesheet} label="S">
     <.cel_shader hours={timesheet.entries |> Enum.at(0) |> Map.get(:hours)} />
   </:col>
   <:col :let={timesheet} label="M">
@@ -60,12 +73,23 @@
     <div class="sr-only">
       <.link navigate={~p"/timesheets/#{timesheet}"}>Show</.link>
     </div>
-    <.link class="rounded bg-indigo-600 px-3 py-3 text-xs font-semibold text-white shadow-sm hover:border-r-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" :if={@current_user.admin || timesheet.status != :accpeted} navigate={~p"/timesheets/#{timesheet}/edit"}><.icon name={"hero-pencil-solid h-4"} /></.link>
+    <.link
+      :if={@current_user.admin || timesheet.status != :accepted}
+      class="rounded bg-indigo-600 px-3 py-3 text-xs font-semibold text-white shadow-sm hover:border-r-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      navigate={~p"/timesheets/#{timesheet}/edit"}
+    >
+      <.icon name="hero-pencil-solid h-4" />
+    </.link>
   </:action>
   <:action :let={timesheet}>
-    <.link class="rounded bg-red-600 px-3 py-3 text-xs font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600" :if={@current_user.admin || timesheet.status != :accpeted}  href={~p"/timesheets/#{timesheet}"} method="delete" data-confirm="Are you sure?">
-      <.icon name={"hero-trash-solid h-4"} />
+    <.link
+      :if={@current_user.admin || (timesheet.status |> dbg() != :accepted) }
+      class="rounded bg-red-600 px-3 py-3 text-xs font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+      href={~p"/timesheets/#{timesheet}"}
+      method="delete"
+      data-confirm="Are you sure?"
+    >
+      <.icon name="hero-trash-solid h-4" />
     </.link>
   </:action>
 </.table>
-
