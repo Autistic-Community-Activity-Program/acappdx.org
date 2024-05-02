@@ -6,7 +6,10 @@ defmodule AcapWeb.TimesheetController do
 
   def index(%{assigns: %{current_user: current_user}} = conn , _params) do
     timesheets = Timesheets.list_timesheets(current_user)
-    render(conn, :index, timesheets: timesheets)
+    total_pending_timesheets = Timesheets.total_pending_timesheets()
+    total_pending_hours = Timesheets.total_pending_hours()
+    total_accepted_hours = Timesheets.total_accepted_hours()
+    render(conn, :index, timesheets: timesheets, total_pending_timesheets: total_pending_timesheets, total_pending_hours: total_pending_hours, total_accepted_hours: total_accepted_hours)
   end
 
   def new(conn, _params) do

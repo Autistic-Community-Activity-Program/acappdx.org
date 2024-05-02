@@ -110,8 +110,8 @@ defmodule AcapWeb.CoreComponents do
 
     ~H"""
     <div
-      onclick="this.remove()"
       :if={msg = render_slot(@inner_block) || Phoenix.Flash.get(@flash, @kind)}
+      onclick="this.remove()"
       id={@id}
       role="alert"
       class={[
@@ -127,7 +127,12 @@ defmodule AcapWeb.CoreComponents do
         <%= @title %>
       </p>
       <p class="mt-2 text-sm leading-5"><%= msg %></p>
-      <button onclick="this.parentElement.remove()" type="button" class="group absolute top-1 right-1 p-2" aria-label={gettext("close")}>
+      <button
+        onclick="this.parentElement.remove()"
+        type="button"
+        class="group absolute top-1 right-1 p-2"
+        aria-label={gettext("close")}
+      >
         <.icon name="hero-x-mark-solid" class="h-5 w-5 opacity-40 group-hover:opacity-70" />
       </button>
     </div>
@@ -169,6 +174,7 @@ defmodule AcapWeb.CoreComponents do
   attr :for, :any, required: true, doc: "the datastructure for the form"
   attr :as, :any, default: nil, doc: "the server side parameter to collect all input under"
   attr :id, :any, default: nil
+
   attr :rest, :global,
     include: ~w(autocomplete name rel action enctype method novalidate target multipart),
     doc: "the arbitrary HTML attributes to apply to the form tag"
@@ -178,7 +184,7 @@ defmodule AcapWeb.CoreComponents do
 
   def simple_form(assigns) do
     ~H"""
-    <.form id={@id} :let={f} for={@for} as={@as} {@rest}>
+    <.form :let={f} id={@id} for={@for} as={@as} {@rest}>
       <div class="mt-10 space-y-8 bg-white">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
@@ -440,6 +446,7 @@ defmodule AcapWeb.CoreComponents do
 
   slot :col, required: true do
     attr :label, :string
+    attr :class, :string
   end
 
   slot :action, doc: "the slot for showing user actions in the last table column"
@@ -466,7 +473,7 @@ defmodule AcapWeb.CoreComponents do
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
           class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-50">
+          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class={["group hover:bg-zinc-50"]} >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               onclick={"window.location.href = '#{@row_click.(row)}';"}
@@ -575,6 +582,57 @@ defmodule AcapWeb.CoreComponents do
     """
   end
 
+  def current_week_styling(%{week_starting: week_starting} = assigns) do
+    if Date.beginning_of_week(Date.utc_today(), :sunday) == week_starting |> dbg() do
+    ~H"""
+    <span class="inline-flex items-center gap-x-1.5 px-2 py-1 text-xs font-medium text-gray-900">
+      <svg class="h-1.5 w-1.5 fill-purple-500" viewBox="0 0 6 6" aria-hidden="true">
+        <circle cx="3" cy="3" r="3" />
+      </svg>
+      <%= day_of_the_week_formated(@week_starting) %>
+    </span>
+    """
+    else
+      ~H"""
+      <span class="inline-flex items-center gap-x-1.5 px-2 py-1 text-xs font-medium text-gray-900">
+        <%= day_of_the_week_formated(@week_starting) %>
+      </span>
+      """
+    end
+  end
+
+  def status(%{status: :draft} = assigns) do
+    ~H"""
+    <span class="inline-flex items-center rounded-md bg-yellow-400/10 px-2 py-1 text-xs font-medium text-yellow-500 ring-1 ring-inset ring-yellow-400/20">
+      Draft
+    </span>
+    """
+  end
+
+  def status(%{status: :submitted} = assigns) do
+    ~H"""
+    <span class="inline-flex items-center rounded-md bg-indigo-400/10 px-2 py-1 text-xs font-medium text-indigo-400 ring-1 ring-inset ring-indigo-400/30">
+      Submitted
+    </span>
+    """
+  end
+
+  def status(%{status: :accepted} = assigns) do
+    ~H"""
+    <span class="inline-flex items-center rounded-md bg-green-500/10 px-2 py-1 text-xs font-medium text-green-400 ring-1 ring-inset ring-green-500/20">
+      Accepted
+    </span>
+    """
+  end
+
+  def status(%{status: :rejected} = assigns) do
+    ~H"""
+    <span class="inline-flex items-center rounded-md bg-red-400/10 px-2 py-1 text-xs font-medium text-red-400 ring-1 ring-inset ring-red-400/20">
+      Rejected
+    </span>
+    """
+  end
+
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do
@@ -649,7 +707,6 @@ defmodule AcapWeb.CoreComponents do
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
-
 
   def day_of_the_week_formated(date) when is_binary(date) do
     date |> Date.from_iso8601!() |> NimbleStrftime.format("%a, %m/%d/%y")
