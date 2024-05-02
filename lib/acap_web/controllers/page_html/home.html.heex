@@ -1,2 +1,13 @@
-<h1 class="text-center font-black text-3xl mb-4">Welcome to ACAP Admin!</h1>
-<img class="mx-auto w-1/2 rounded media shadow-lg mb-20" src={~p"/images/home.webp"} />
+<div class="bg-gradient-to-b from-[#e3e8e4] to-[#fffde9]">
+  <AcapWeb.Layouts.header_nav current_user={@current_user} />
+
+  <main class="px-4 sm:px-6 lg:px-8 pt-40 ">
+    <div class="mx-auto max-w-7xl">
+      <.flash_group flash={@flash} />
+      <h1 class="text-center font-black text-xl sm:text-3xl mb-4">Welcome to ACAP admin site!</h1>
+      <img class="mx-auto w-full sm:w-1/2 rounded media shadow-lg mb-20" src={~p"/images/home.webp"} />
+    </div>
+  </main>
+
+  <AcapWeb.Layouts.footer />
+</div>
