@@ -66,7 +66,7 @@
             <option>Rejected</option>
           </select>
         </div>
-        <div class="mr-6">
+        <div class="mr-6" :if={(@current_user != nil) && @current_user.admin}>
           <label for="user" class="block text-sm font-medium leading-6 text-gray-900">
             Account
           </label>
@@ -153,21 +153,21 @@
     </div>
     <.link
       :if={@current_user.admin || timesheet.status != :accepted}
-      class="rounded bg-indigo-600 px-3 py-3 text-xs font-semibold text-white shadow-sm hover:border-r-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      class="rounded bg-indigo-600 text-xs p-2 font-semibold text-white shadow-md hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ring-2 ring-indigo-300"
       navigate={~p"/timesheets/#{timesheet}/edit"}
     >
-      <.icon name="hero-pencil-solid h-4" />
+      <.icon name="hero-pencil-solid h-4 w-4" />
     </.link>
   </:action>
   <:action :let={timesheet}>
     <.link
       :if={@current_user.admin || timesheet.status |> dbg() != :accepted}
-      class="rounded bg-red-600 px-3 py-3 text-xs font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+      class="rounded bg-red-600 text-xs p-2 font-semibold text-white shadow-md hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 ring-2 ring-red-300"
       href={~p"/timesheets/#{timesheet}"}
       method="delete"
       data-confirm="Are you sure?"
     >
-      <.icon name="hero-trash-solid h-4" />
+      <.icon name="hero-trash-solid h-4 w-4" />
     </.link>
   </:action>
 </.table>

@@ -11,7 +11,7 @@
       :if={@current_user.admin || @timesheet.status != :accpeted}
       href={~p"/timesheets/#{@timesheet}/edit"}
     >
-      <.button>Edit timesheet</.button> 
+      <.button class="bg-blue-600">Edit timesheet</.button> 
     </.link>
   </:actions>
 </.header>

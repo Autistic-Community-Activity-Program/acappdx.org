@@ -67,6 +67,8 @@ defmodule AcapWeb.Router do
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
 
+    resources "/accounts", AccountsController, only: [:index, :new, :delete]
+
     resources "/timesheets", TimesheetController
   end
 

@@ -1,0 +1,41 @@
+<.header>
+  Account <%= @user.id %>
+  <:subtitle>
+    <div class="my-8">
+      <.status status={@user.status} />
+      <div class="mt-4"><%= @user.user.email %></div>
+    </div>
+  </:subtitle>
+  <:actions>
+    <.link
+      :if={@current_user.admin}
+      href={~p"/accounts/#{@user}/edit"}
+    >
+      <.button class="bg-blue-600">Edit user</.button> 
+    </.link>
+  </:actions>
+</.header>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+  <%= for %{day: day, hours: hours, notes: notes} <- @user.entries do %>
+    <div id="user_entries_6" class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
+      <span id="user_entries_6_label"><%= day |> day_of_the_week_formated() %></span>
+      <div phx-feedback-for="user[entries][6][hours]">
+        <span
+          for="user_entries_6_hours"
+          class="block text-sm font-semibold leading-6 text-zinc-800"
+        >
+          Hours: <%= hours %>
+        </span>
+        <div class="my-6">
+        <h3>Notes:</h3>
+        <p>
+          <%= notes %>
+        </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<.back navigate={~p"/accounts"}>Back to Accounts</.back>

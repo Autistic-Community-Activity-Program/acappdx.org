@@ -55,6 +55,8 @@
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
       <a href={~p"/timesheets"} class="text-sm font-semibold leading-6 text-zinc-900">Timesheets</a>
+      <a :if={(@current_user != nil) && @current_user.admin} href={~p"/accounts"} class="text-sm font-semibold leading-6 text-zinc-900">Accounts</a>
+
     </div>
 
     <div class="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -139,6 +141,14 @@
             class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-zinc-900 hover:bg-zinc-50"
           >
             Timesheets
+          </a>
+
+          <a
+            :if={(@current_user != nil) && @current_user.admin} 
+            href={~p"/timesheets"}
+            class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-zinc-900 hover:bg-zinc-50"
+          >
+            Accounts
           </a>
           
         </div>

@@ -18,6 +18,11 @@ defmodule Acap.Accounts do
     User |> Repo.all()
   end
 
+  def delete_user(%User{} = user) do
+    Repo.delete(user)
+  end
+
+
   @doc """
   Gets a user by email.
 

@@ -1,0 +1,42 @@
+
+
+<.header>
+  Listing Accounts
+  <:actions>
+    <.link href={~p"/accounts/new"}>
+      <.button class="bg-indigo-600">
+      Invite Account
+      <.icon name="hero-plus" class="w-5 h-5"/>
+
+      </.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table id="accounts" rows={@users} row_click={&~p"/accounts/#{&1}"}>
+  <:col :let={user} label="ID">
+    <%= user.id %>
+  </:col>
+  <:col :let={user} label="Email">
+    <%= user.email %>
+  </:col>
+    <:col :let={user} label="Created on">
+    <%= user.inserted_at %>
+  </:col>
+  
+  <:action :let={user}>
+    <div class="sr-only">
+      <.link navigate={~p"/accounts/#{user}"}>Show</.link>
+    </div>
+
+  </:action>
+  <:action :let={user}>
+    <.link
+      :if={@current_user.admin}
+      class="rounded bg-red-600 text-xs p-2 font-semibold text-white shadow-md hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 ring-2 ring-red-300"
+      href={~p"/accounts/#{user}"}
+      method="delete"
+      data-confirm="Are you sure?"
+    ><.icon name="hero-trash h-4 w-4" /></.link>
+  </:action>
+</.table>
