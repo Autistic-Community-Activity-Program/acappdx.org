@@ -583,7 +583,7 @@ defmodule AcapWeb.CoreComponents do
   end
 
   def current_week_styling(%{week_starting: week_starting} = assigns) do
-    if (Date.beginning_of_week(Date.utc_today(), :sunday) == week_starting) |> dbg() do
+    if (Date.beginning_of_week(Date.utc_today(), :sunday) == week_starting) do
     ~H"""
     <span class="inline-flex items-center gap-x-1.5 px-2 py-1 text-xs font-medium text-gray-900">
 

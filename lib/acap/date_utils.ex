@@ -4,7 +4,7 @@ defmodule Acap.DateUtils do
     today = Date.utc_today()
 
     # Get the current year using year_of_era/1
-    {current_year, _} = Date.year_of_era(today) |> dbg()
+    {current_year, _} = Date.year_of_era(today)
 
     # Find the first day of the year
     {:ok, first_day} = Date.new(current_year, 1, 1)
@@ -13,7 +13,6 @@ defmodule Acap.DateUtils do
     first_sunday = first_day
                     |> Date.day_of_week()
                     |> calc_first_sunday(first_day)
-                    |> dbg()
 
     # Generate all Sundays of the year
     Stream.iterate(first_sunday, &Date.add(&1, 7))

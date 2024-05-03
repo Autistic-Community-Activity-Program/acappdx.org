@@ -5,8 +5,13 @@ defmodule AcapWeb.TimesheetController do
   alias Acap.Timesheets
   alias Acap.Timesheets.Timesheet
 
-  def index(%{assigns: %{current_user: current_user}} = conn, _params) do
-    timesheets = Timesheets.list_timesheets(current_user)
+  def index(%{assigns: %{current_user: current_user}} = conn, params) do
+
+    filter_date = params |> Map.get("week_starting", nil)
+    filter_status = params |> Map.get("status", nil)
+    filter_user = params |> Map.get("user", nil)
+
+    timesheets = Timesheets.list_timesheets(current_user, filter_date, filter_status, filter_user)
     total_pending_timesheets = Timesheets.total_pending_timesheets()
     total_pending_hours = Timesheets.total_pending_hours()
     total_accepted_hours = Timesheets.total_accepted_hours()
@@ -20,7 +25,10 @@ defmodule AcapWeb.TimesheetController do
       total_pending_hours: total_pending_hours,
       total_accepted_hours: total_accepted_hours,
       all_users: all_users,
-      all_starting_weeks: all_starting_weeks
+      all_starting_weeks: all_starting_weeks,
+      filter_date: filter_date,
+      filter_status: filter_status,
+      filter_user: filter_user
     )
   end
 

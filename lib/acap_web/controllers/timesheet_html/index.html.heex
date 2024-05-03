@@ -31,42 +31,44 @@
 </dl>
 <hr />
 <div class=" my-10 ">
-  <div class="">
+  <form action={~p"/timesheets"}>
     <h3 class="text-base font-semibold leading-6 text-gray-900">Filter Timesheets</h3>
     <div class="mt-2 sm:flex sm:items-start sm:justify-between">
       <div class="sm:flex w-full text-sm text-gray-500">
         <div class="mr-6">
-          <label for="location" class="block text-sm font-medium leading-6 text-gray-900">
+          <label for="week_starting" class="block text-sm font-medium leading-6 text-gray-900">
             Week Starting
           </label>
           <select
-            id="location"
-            name="location"
+            id="week_starting"
+            name="week_starting"
             class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
           >
             <option value="">Filter by date</option>
             <%= for starting_week <- @all_starting_weeks do %>
-            <option value={starting_week}><.current_week_styling week_starting={starting_week} /></option>
+              <option value={starting_week} selected={@filter_date && @filter_date != "" && @filter_date |> dbg() |> Date.from_iso8601!() == starting_week}>
+                <.current_week_styling week_starting={starting_week} />
+              </option>
             <% end %>
           </select>
         </div>
         <div class="mr-6">
-          <label for="location" class="block text-sm font-medium leading-6 text-gray-900">
+          <label for="status" class="block text-sm font-medium leading-6 text-gray-900">
             Status
           </label>
           <select
-            id="location"
-            name="location"
+            id="status"
+            name="status"
             class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
           >
             <option value="">Filter by status</option>
-            <option>Draft</option>
-            <option>Submitted</option>
-            <option>Accepted</option>
-            <option>Rejected</option>
+            <option selected={@filter_status == "Draft"}>Draft</option>
+            <option selected={@filter_status == "Submitted"}>Submitted</option>
+            <option selected={@filter_status == "Accepted"}>Accepted</option>
+            <option selected={@filter_status == "Rejected"}>Rejected</option>
           </select>
         </div>
-        <div class="mr-6" :if={(@current_user != nil) && @current_user.admin}>
+        <div :if={@current_user != nil && @current_user.admin} class="mr-6">
           <label for="user" class="block text-sm font-medium leading-6 text-gray-900">
             Account
           </label>
@@ -77,22 +79,21 @@
           >
             <option value="">Filter by user</option>
             <%= for user <- @all_users do %>
-            <option value={user.id}><%= user.email %></option>
+              <option selected={@filter_user == user.id } value={user.id}><%= user.email %></option>
             <% end %>
           </select>
         </div>
       </div>
       <div class="mt-5 sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
         <button
-          type="button"
+          type="submit"
           class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
         >
-          Filter
-          <.icon name="hero-funnel" class="ml-2 h-5 w-5" />
+          Filter <.icon name="hero-funnel" class="ml-2 h-5 w-5" />
         </button>
       </div>
     </div>
-  </div>
+  </form>
 </div>
 
 <hr class="pb-10" />
@@ -102,16 +103,13 @@
   <:actions>
     <.link href={~p"/timesheets/new"}>
       <.button class="hover:bg-indigo-600/90 bg-indigo-600 hover:shadow-lg">
-      New Timesheet
-      <.icon name="hero-plus" class="w-5 h-5"/>
-
+        New Timesheet <.icon name="hero-plus" class="w-5 h-5" />
       </.button>
     </.link>
 
     <.link class="" href={~p"/timesheets/new"}>
-      <.button class="hover:bg-orange-600/90 bg-orange-600  hover:shadow-lg">
-        Export
-        <.icon name="hero-cloud-arrow-down" class="w-5 h-5"/>
+      <.button class="hover:bg-orange-600/90 bg-orange-600 hover:shadow-lg">
+        Export <.icon name="hero-cloud-arrow-down" class="w-5 h-5" />
       </.button>
     </.link>
   </:actions>

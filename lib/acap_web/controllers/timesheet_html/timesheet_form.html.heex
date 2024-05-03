@@ -16,7 +16,7 @@
         type="select"
         label="Status"
         prompt="Choose a value"
-        options={@admin |> dbg() && [:draft, :submitted, :accepted, :rejected] || [:draft, :submitted]}
+        options={@admin && [:draft, :submitted, :accepted, :rejected] || [:draft, :submitted]}
       />
     </div>
 

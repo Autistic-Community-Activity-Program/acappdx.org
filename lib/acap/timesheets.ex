@@ -17,12 +17,16 @@ defmodule Acap.Timesheets do
       [%Timesheet{}, ...]
 
   """
-  def list_timesheets(%{admin: true}) do
+  def list_timesheets(%{admin: true}, filter_date, filter_status, filter_user) do
     query =
-      from t in Timesheet,
+      from(t in Timesheet,
         select: t,
         order_by: [desc: t.week_starting],
         preload: [:user]
+      )
+      |> maybe_filter_date(filter_date)
+      |> maybe_filter_status(filter_status)
+      |> maybe_filter_user(filter_user)
 
     Repo.all(query)
   end
@@ -37,6 +41,37 @@ defmodule Acap.Timesheets do
         preload: [:user]
 
     Repo.all(query)
+  end
+
+  defp maybe_filter_date(q, nil), do: q
+  defp maybe_filter_date(q, ""), do: q
+
+  defp maybe_filter_date(q, filter_date) do
+    filter_date = filter_date |> Date.from_iso8601!()
+    where(q, [t], t.week_starting == ^filter_date)
+  end
+
+  defp maybe_filter_status(q, nil), do: q
+  defp maybe_filter_status(q, ""), do: q
+
+  defp maybe_filter_status(q, "Draft") do
+    where(q, [t], t.status == :draft)
+  end
+  defp maybe_filter_status(q, "Submitted") do
+    where(q, [t], t.status == :submitted)
+  end
+  defp maybe_filter_status(q, "Accepted") do
+    where(q, [t], t.status == :accepted)
+  end
+  defp maybe_filter_status(q, "Rejected") do
+    where(q, [t], t.status == :rejected)
+  end
+
+  defp maybe_filter_user(q, nil), do: q
+  defp maybe_filter_user(q, ""), do: q
+
+  defp maybe_filter_user(q, filter_user) do
+    where(q, [t], t.user_id == ^filter_user)
   end
 
   @doc """
@@ -164,6 +199,7 @@ defmodule Acap.Timesheets do
     [total] = Repo.all(q)
     total || 0
   end
+
   def total_pending_hours() do
     sql = """
     SELECT SUM((elem->>'hours')::float) AS total_hours
@@ -177,6 +213,7 @@ defmodule Acap.Timesheets do
 
     total || 0
   end
+
   def total_accepted_hours() do
     sql = """
     SELECT SUM((elem->>'hours')::float) AS total_hours
