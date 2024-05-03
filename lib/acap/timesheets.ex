@@ -31,14 +31,17 @@ defmodule Acap.Timesheets do
     Repo.all(query)
   end
 
-  def list_timesheets(%{id: user_id}) do
-    # get where user is same
+  def list_timesheets(%{id: user_id}, filter_date, filter_status, _filter_user) do
+
     query =
-      from t in Timesheet,
+      from(t in Timesheet,
         where: t.user_id == ^user_id,
         select: t,
         order_by: [desc: t.week_starting],
         preload: [:user]
+      )
+      |> maybe_filter_date(filter_date)
+      |> maybe_filter_status(filter_status)
 
     Repo.all(query)
   end
