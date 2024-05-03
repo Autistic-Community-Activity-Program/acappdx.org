@@ -214,7 +214,7 @@ defmodule AcapWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
+        "phx-submit-loading:opacity-75 rounded-lg hover:bg-zinc-700 py-2 px-3",
         "text-sm font-semibold leading-6 text-white active:text-white/80",
         @class
       ]}
@@ -583,19 +583,17 @@ defmodule AcapWeb.CoreComponents do
   end
 
   def current_week_styling(%{week_starting: week_starting} = assigns) do
-    if Date.beginning_of_week(Date.utc_today(), :sunday) == week_starting |> dbg() do
+    if (Date.beginning_of_week(Date.utc_today(), :sunday) == week_starting) |> dbg() do
     ~H"""
     <span class="inline-flex items-center gap-x-1.5 px-2 py-1 text-xs font-medium text-gray-900">
-      <svg class="h-1.5 w-1.5 fill-purple-500" viewBox="0 0 6 6" aria-hidden="true">
-        <circle cx="3" cy="3" r="3" />
-      </svg>
-      <%= day_of_the_week_formated(@week_starting) %>
+
+    <%=  @week_starting |> NimbleStrftime.format("%m/%d/%y") %> 🔹
     </span>
     """
     else
       ~H"""
       <span class="inline-flex items-center gap-x-1.5 px-2 py-1 text-xs font-medium text-gray-900">
-        <%= day_of_the_week_formated(@week_starting) %>
+        <%= @week_starting |> NimbleStrftime.format("%m/%d/%y") %>
       </span>
       """
     end
@@ -673,6 +671,7 @@ defmodule AcapWeb.CoreComponents do
       <span class="inline-flex items-center rounded-md bg-red-100 px-2 py-1 text-xs font-bold text-red-600 ring-1 ring-inset ring-red-600"><%= @hours %></span>
     """
   end
+
 
   ## JS Commands
 
@@ -756,6 +755,7 @@ defmodule AcapWeb.CoreComponents do
   def day_of_the_week_formated(date) do
     NimbleStrftime.format(date, "%a, %m/%d/%y")
   end
+
 
 
 end

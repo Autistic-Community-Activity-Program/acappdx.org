@@ -1,8 +1,8 @@
 <dl
   :if={@current_user.admin}
-  class="mb-12 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4"
+  class="mb-12 grid grid-cols-1 gap-0.5 overflow-hidden shadow rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4"
 >
-  <div class="flex flex-col bg-gray-400/5 p-8">
+  <div class="flex flex-col bg-zinc-400/5 p-8">
     <dt class="text-sm font-semibold leading-6 text-gray-600">Timesheets waiting for review</dt>
     <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">
       <%= @total_pending_timesheets %>
@@ -29,12 +29,90 @@
     </dd>
   </div>
 </dl>
+<hr />
+<div class=" my-10 ">
+  <div class="">
+    <h3 class="text-base font-semibold leading-6 text-gray-900">Filter Timesheets</h3>
+    <div class="mt-2 sm:flex sm:items-start sm:justify-between">
+      <div class="sm:flex w-full text-sm text-gray-500">
+        <div class="mr-6">
+          <label for="location" class="block text-sm font-medium leading-6 text-gray-900">
+            Week Starting
+          </label>
+          <select
+            id="location"
+            name="location"
+            class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          >
+            <option value="">Filter by date</option>
+            <%= for starting_week <- @all_starting_weeks do %>
+            <option value={starting_week}><.current_week_styling week_starting={starting_week} /></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="mr-6">
+          <label for="location" class="block text-sm font-medium leading-6 text-gray-900">
+            Status
+          </label>
+          <select
+            id="location"
+            name="location"
+            class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          >
+            <option value="">Filter by status</option>
+            <option>Draft</option>
+            <option>Submitted</option>
+            <option>Accepted</option>
+            <option>Rejected</option>
+          </select>
+        </div>
+        <div class="mr-6">
+          <label for="user" class="block text-sm font-medium leading-6 text-gray-900">
+            Account
+          </label>
+          <select
+            id="user"
+            name="user"
+            class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          >
+            <option value="">Filter by user</option>
+            <%= for user <- @all_users do %>
+            <option value={user.id}><%= user.email %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+      <div class="mt-5 sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
+        <button
+          type="button"
+          class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+        >
+          Filter
+          <.icon name="hero-funnel" class="ml-2 h-5 w-5" />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="pb-10" />
 
 <.header>
   Listing Timesheets
   <:actions>
     <.link href={~p"/timesheets/new"}>
-      <.button>New Timesheet</.button>
+      <.button class="bg-indigo-600">
+      New Timesheet
+      <.icon name="hero-plus" class="w-5 h-5"/>
+
+      </.button>
+    </.link>
+
+    <.link class="" href={~p"/timesheets/new"}>
+      <.button class="bg-orange-600">
+        Export
+        <.icon name="hero-cloud-arrow-down" class="w-5 h-5"/>
+      </.button>
     </.link>
   </:actions>
 </.header>
@@ -83,7 +161,7 @@
   </:action>
   <:action :let={timesheet}>
     <.link
-      :if={@current_user.admin || (timesheet.status |> dbg() != :accepted) }
+      :if={@current_user.admin || timesheet.status |> dbg() != :accepted}
       class="rounded bg-red-600 px-3 py-3 text-xs font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
       href={~p"/timesheets/#{timesheet}"}
       method="delete"

@@ -1,15 +1,27 @@
 defmodule AcapWeb.TimesheetController do
   use AcapWeb, :controller
 
+  alias Acap.Accounts
   alias Acap.Timesheets
   alias Acap.Timesheets.Timesheet
 
-  def index(%{assigns: %{current_user: current_user}} = conn , _params) do
+  def index(%{assigns: %{current_user: current_user}} = conn, _params) do
     timesheets = Timesheets.list_timesheets(current_user)
     total_pending_timesheets = Timesheets.total_pending_timesheets()
     total_pending_hours = Timesheets.total_pending_hours()
     total_accepted_hours = Timesheets.total_accepted_hours()
-    render(conn, :index, timesheets: timesheets, total_pending_timesheets: total_pending_timesheets, total_pending_hours: total_pending_hours, total_accepted_hours: total_accepted_hours)
+    all_users = Accounts.list_users()
+
+    all_starting_weeks = Acap.DateUtils.all_sundays()
+
+    render(conn, :index,
+      timesheets: timesheets,
+      total_pending_timesheets: total_pending_timesheets,
+      total_pending_hours: total_pending_hours,
+      total_accepted_hours: total_accepted_hours,
+      all_users: all_users,
+      all_starting_weeks: all_starting_weeks
+    )
   end
 
   def new(conn, _params) do
@@ -23,13 +35,21 @@ defmodule AcapWeb.TimesheetController do
           notes: ""
         }
       end
-    changeset = Timesheets.change_timesheet(%Timesheet{}, %{entries: default_entries, week_starting: start_of_week})
+
+    changeset =
+      Timesheets.change_timesheet(%Timesheet{}, %{
+        entries: default_entries,
+        week_starting: start_of_week
+      })
 
     render(conn, :new, changeset: changeset, assets_js_path: ~p"/assets/timesheet.js")
   end
 
   def create(%{assigns: %{current_user: current_user}} = conn, %{"timesheet" => timesheet_params}) do
-    case Timesheets.create_timesheet(timesheet_params |> Map.merge(%{"user_id" => current_user.id})) do
+    case Timesheets.create_timesheet(
+           timesheet_params
+           |> Map.merge(%{"user_id" => current_user.id})
+         ) do
       {:ok, timesheet} ->
         conn
         |> put_flash(:info, "Timesheet created successfully.")
@@ -48,10 +68,18 @@ defmodule AcapWeb.TimesheetController do
   def edit(%{assigns: %{current_user: current_user}} = conn, %{"id" => id}) do
     timesheet = Timesheets.get_timesheet!(id, current_user, :edit)
     changeset = Timesheets.change_timesheet(timesheet)
-    render(conn, :edit, timesheet: timesheet, changeset: changeset, assets_js_path: ~p"/assets/timesheet.js")
+
+    render(conn, :edit,
+      timesheet: timesheet,
+      changeset: changeset,
+      assets_js_path: ~p"/assets/timesheet.js"
+    )
   end
 
-  def update(%{assigns: %{current_user: current_user}} = conn, %{"id" => id, "timesheet" => timesheet_params}) do
+  def update(%{assigns: %{current_user: current_user}} = conn, %{
+        "id" => id,
+        "timesheet" => timesheet_params
+      }) do
     timesheet = Timesheets.get_timesheet!(id, current_user, :edit)
 
     case Timesheets.update_timesheet(timesheet, timesheet_params) do
@@ -61,7 +89,11 @@ defmodule AcapWeb.TimesheetController do
         |> redirect(to: ~p"/timesheets/#{timesheet}")
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, :edit, timesheet: timesheet, changeset: changeset, assets_js_path: ~p"/assets/timesheet.js")
+        render(conn, :edit,
+          timesheet: timesheet,
+          changeset: changeset,
+          assets_js_path: ~p"/assets/timesheet.js"
+        )
     end
   end
 

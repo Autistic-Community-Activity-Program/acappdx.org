@@ -11,6 +11,14 @@ defmodule Acap.Accounts do
   ## Database getters
 
   @doc """
+  Gets all users
+  """
+
+  def list_users() do
+    User |> Repo.all()
+  end
+
+  @doc """
   Gets a user by email.
 
   ## Examples
