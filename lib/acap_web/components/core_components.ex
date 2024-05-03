@@ -411,7 +411,7 @@ defmodule AcapWeb.CoreComponents do
 
   def header(assigns) do
     ~H"""
-    <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
+    <header class={[@actions != [] && "sm:flex items-center justify-between gap-6 mb-4", @class]}>
       <div>
         <h1 class="text-lg font-semibold leading-8 text-zinc-800">
           <%= render_slot(@inner_block) %>
@@ -471,9 +471,9 @@ defmodule AcapWeb.CoreComponents do
         <tbody
           id={@id}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
+          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-800"
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class={["group hover:bg-zinc-50"]} >
+          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class={["group hover:bg-zinc-50 hover:shadow-xl"]} >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               onclick={"window.location.href = '#{@row_click.(row)}';"}
