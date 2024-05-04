@@ -5,6 +5,27 @@ defmodule AcapWeb.TimesheetController do
   alias Acap.Timesheets
   alias Acap.Timesheets.Timesheet
 
+  def export(%{assigns: %{current_user: current_user}} = conn, params) do
+    filter_date = params |> Map.get("week_starting", nil)
+    filter_status = params |> Map.get("status", nil)
+    filter_user = params |> Map.get("user", nil)
+
+    timesheets = Timesheets.list_timesheets(current_user, filter_date, filter_status, filter_user)
+
+    case Acap.Exporter.export(timesheets, [:id, :week_starting, :status, :entries, :user]) do
+      {:ok, csv_data} ->
+        conn
+        |> put_resp_content_type("text/csv")
+        |> put_resp_header("content-disposition", "attachment; filename=\"timesheets.csv\"")
+        |> send_resp(200, csv_data)
+
+      {:error, reason} ->
+        conn
+        |> put_flash(:error, "Failed to generate CSV: #{reason}")
+        |> redirect(to: ~p"/timesheets")
+    end
+  end
+
   def index(%{assigns: %{current_user: current_user}} = conn, params) do
 
     filter_date = params |> Map.get("week_starting", nil)

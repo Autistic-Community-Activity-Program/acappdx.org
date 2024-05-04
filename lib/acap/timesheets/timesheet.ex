@@ -2,6 +2,8 @@ defmodule Acap.Timesheets.Timesheet.TimesheetEntry do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:day, :hours, :notes]}
+
   embedded_schema do
     field :day, :date
     field :hours, :float
@@ -13,6 +15,7 @@ defmodule Acap.Timesheets.Timesheet.TimesheetEntry do
     |> cast(attrs, [:day, :hours, :notes])
     |> validate_required([:day, :hours])
   end
+
 end
 
 defmodule Acap.Timesheets.Timesheet do

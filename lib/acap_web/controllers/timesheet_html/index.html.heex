@@ -162,11 +162,14 @@
       </.button>
     </.link>
 
-    <.link class="" href={~p"/timesheets/new"}>
+    <.form action={~p"/timesheets/export"} method="POST" class="inline">
+      <input type="hidden" name="filter_data" value={@filter_date} />
+      <input type="hidden" name="filter_status" value={@filter_status} />
+      <input type="hidden" name="filter_user" value={@filter_user} />
       <.button class="hover:bg-orange-600/90 bg-orange-600 hover:shadow-lg">
         Export <.icon name="hero-cloud-arrow-down" class="w-5 h-5" />
       </.button>
-    </.link>
+    </.form>
   </:actions>
 </.header>
 

@@ -50,7 +50,8 @@ defmodule Acap.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:plug_cowboy, "~> 2.5"},
-      {:nimble_strftime, "~> 0.1.1"}
+      {:nimble_strftime, "~> 0.1.1"},
+      {:nimble_csv, "~> 1.0"}
     ]
   end
 

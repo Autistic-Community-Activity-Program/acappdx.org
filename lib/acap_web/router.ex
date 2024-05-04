@@ -60,7 +60,10 @@ defmodule AcapWeb.Router do
   scope "/", AcapWeb do
     pipe_through [:browser, :require_authenticated_admin]
     live_dashboard "/dashboard", metrics: AcapWeb.Telemetry
+
+    post "/timesheets/export", TimesheetController, :export
     resources "/accounts", AccountsController, only: [:index, :new, :delete]
+
   end
 
   scope "/", AcapWeb do
