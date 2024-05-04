@@ -7,7 +7,7 @@
   <.simple_form :let={f} for={@conn.params["user"]} as={:user} action={~p"/users/reset_password"}>
     <.input field={f[:email]} type="email" placeholder="Email" required />
     <:actions>
-      <.button phx-disable-with="Sending..." class="w-full">
+      <.button phx-disable-with="Sending..." class="bg-indigo-600 w-full">
         Send password reset instructions
       </.button>
     </:actions>
