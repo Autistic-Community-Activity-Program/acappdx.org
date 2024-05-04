@@ -203,6 +203,28 @@ defmodule Acap.Timesheets do
     total || 0
   end
 
+  def total_accepted_hours_for_current_week() do
+    # Get today's date
+    start_of_week = Date.beginning_of_week(Date.utc_today(), :sunday)
+
+    # SQL query that filters timesheets starting from the current Sunday
+    sql = """
+    SELECT SUM((elem->>'hours')::float) AS total_hours
+    FROM timesheets,
+    LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+    AND timesheets.status = 'accepted'
+    AND timesheets.week_starting = $1
+    """
+
+    # Execute the query with the current Sunday as a parameter
+    {:ok, %Postgrex.Result{rows: [[total]]}} = Repo.query(sql, [start_of_week])
+
+    # Return the total hours or 0 if nil
+    total || 0
+  end
+
+
   def total_pending_hours() do
     sql = """
     SELECT SUM((elem->>'hours')::float) AS total_hours

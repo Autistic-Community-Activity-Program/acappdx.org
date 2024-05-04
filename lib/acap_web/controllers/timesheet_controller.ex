@@ -37,6 +37,7 @@ defmodule AcapWeb.TimesheetController do
     total_pending_timesheets = Timesheets.total_pending_timesheets()
     total_pending_hours = Timesheets.total_pending_hours()
     total_accepted_hours = Timesheets.total_accepted_hours()
+    total_accepted_hours_for_current_week = Timesheets.total_accepted_hours_for_current_week()
     all_users = Accounts.list_users()
 
     all_starting_weeks = Acap.DateUtils.all_sundays()
@@ -46,6 +47,7 @@ defmodule AcapWeb.TimesheetController do
       total_pending_timesheets: total_pending_timesheets,
       total_pending_hours: total_pending_hours,
       total_accepted_hours: total_accepted_hours,
+      total_accepted_hours_for_current_week: total_accepted_hours_for_current_week,
       all_users: all_users,
       all_starting_weeks: all_starting_weeks,
       filter_date: filter_date,
