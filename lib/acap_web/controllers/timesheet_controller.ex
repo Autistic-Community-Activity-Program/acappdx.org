@@ -5,10 +5,11 @@ defmodule AcapWeb.TimesheetController do
   alias Acap.Timesheets
   alias Acap.Timesheets.Timesheet
 
-  def export(%{assigns: %{current_user: current_user}} = conn, params) do
-    filter_date = params |> Map.get("week_starting", nil)
-    filter_status = params |> Map.get("status", nil)
-    filter_user = params |> Map.get("user", nil)
+  def export(%{assigns: %{current_user: current_user}} = conn , params) do
+    dbg(params)
+    filter_date = params |> Map.get("filter_date", nil)
+    filter_status = params |> Map.get("filter_status", nil)
+    filter_user = params |> Map.get("filter_user", nil)
 
     timesheets = Timesheets.list_timesheets(current_user, filter_date, filter_status, filter_user)
 

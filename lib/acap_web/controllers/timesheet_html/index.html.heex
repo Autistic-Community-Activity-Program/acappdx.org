@@ -163,7 +163,7 @@
     </.link>
 
     <.form action={~p"/timesheets/export"} method="POST" class="inline">
-      <input type="hidden" name="filter_data" value={@filter_date} />
+      <input type="hidden" name="filter_date" value={@filter_date} />
       <input type="hidden" name="filter_status" value={@filter_status} />
       <input type="hidden" name="filter_user" value={@filter_user} />
       <.button class="hover:bg-orange-600/90 bg-orange-600 hover:shadow-lg">
