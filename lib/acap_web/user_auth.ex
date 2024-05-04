@@ -194,6 +194,31 @@ defmodule AcapWeb.UserAuth do
       conn
     end
   end
+  @doc """
+  Used for routes that require the user to be authenticated.
+
+  If you want to enforce the user email is confirmed before
+  they use the application at all, here would be a good place.
+  """
+  def require_authenticated_admin(conn, _opts) do
+    if conn.assigns[:current_user] && conn.assigns[:current_user].admin do
+      # if  conn.assigns[:current_user].confirmed_at do
+      #   conn
+      # else
+        conn
+      # |> put_flash(:error, "You must confirm your account, check your email")
+      # |> maybe_store_return_to()
+      # |> redirect(to: ~p"/users/log_in")
+      # |> halt()
+      # end
+    else
+      conn
+      |> put_flash(:error, "You are noth authorized.")
+      |> maybe_store_return_to()
+      |> redirect(to: ~p"/")
+      |> halt()
+    end
+  end
 
   @doc """
   Used for routes that require the user to be authenticated.

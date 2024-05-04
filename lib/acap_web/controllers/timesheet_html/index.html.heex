@@ -31,13 +31,39 @@
 </dl>
 <hr />
 <div class=" my-10 ">
-  <form action={~p"/timesheets"}>
-    <h3 class="text-base font-semibold leading-6 text-gray-900">Filter Timesheets</h3>
+  <form id="filters" action={~p"/timesheets"}>
+    <h3
+      :if={
+        (!@filter_date && @filter_date == "") || (!@filter_status && @filter_status == "") ||
+          (!@filter_user && @filter_user == "")
+      }
+      class="text-base font-semibold leading-6 text-gray-900"
+    >
+      Filter Timesheets
+    </h3>
+    <h3
+      :if={
+        (@filter_date && @filter_date != "") || (@filter_status && @filter_status != "") ||
+          (@filter_user && @filter_user != "")
+      }
+      class="text-base font-semibold leading-6 text-purple-900"
+    >
+      Currently Filtering Timesheets
+    </h3>
     <div class="mt-2 sm:flex sm:items-start sm:justify-between">
       <div class="sm:flex w-full text-sm text-gray-500">
         <div class="mr-6">
-          <label for="week_starting" class="block text-sm font-medium leading-6 text-gray-900">
-            Week Starting
+          <label
+            for="week_starting"
+            class={[
+              "block text-sm font-medium leading-6 text-gray-900",
+              @filter_date && @filter_date != "" && "text-purple-700"
+            ]}
+          >
+            <span :if={@filter_date && @filter_date != ""}>
+              Currently Filting by Week Starting
+            </span>
+            <span :if={!@filter_date || @filter_date == ""}> Week starting</span>
           </label>
           <select
             id="week_starting"
@@ -46,7 +72,13 @@
           >
             <option value="">Filter by date</option>
             <%= for starting_week <- @all_starting_weeks do %>
-              <option value={starting_week} selected={@filter_date && @filter_date != "" && @filter_date |> dbg() |> Date.from_iso8601!() == starting_week}>
+              <option
+                value={starting_week}
+                selected={
+                  @filter_date && @filter_date != "" &&
+                    @filter_date |> Date.from_iso8601!() == starting_week
+                }
+              >
                 <.current_week_styling week_starting={starting_week} />
               </option>
             <% end %>
@@ -73,18 +105,41 @@
             Account
           </label>
           <select
-            id="user"
+            id="filter_user"
             name="user"
             class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
           >
             <option value="">Filter by user</option>
             <%= for user <- @all_users do %>
-              <option selected={@filter_user == user.id } value={user.id}><%= user.email %></option>
+              <option selected={@filter_user == user.id} value={user.id}>
+                <%= user.email %>
+              </option>
             <% end %>
           </select>
         </div>
       </div>
       <div class="mt-5 sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
+        <button
+          :if={
+            (@filter_date && @filter_date != "") || (@filter_status && @filter_status != "") ||
+              (@filter_user && @filter_user != "")
+          }
+          onclick="removeQueryParam(event)"
+          class="inline-flex items-center rounded-md bg-pink-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-500 mr-2"
+        >
+          Clear filter <.icon name="hero-no-symbol" class="ml-2 h-5 w-5" />
+        </button>
+        <script>
+          function removeQueryParam(event) {
+            // Prevent form submission (not strictly necessary here but good practice when mixing types)
+            event.preventDefault();
+            document.getElementById('week_starting').value = ""
+            document.getElementById('status').value = ""
+          
+
+            document.getElementById('filters').submit();
+          }
+        </script>
         <button
           type="submit"
           class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
@@ -159,7 +214,7 @@
   </:action>
   <:action :let={timesheet}>
     <.link
-      :if={@current_user.admin || timesheet.status |> dbg() != :accepted}
+      :if={@current_user.admin || timesheet.status != :accepted}
       class="rounded bg-red-600 text-xs p-2 font-semibold text-white shadow-md hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 ring-2 ring-red-300"
       href={~p"/timesheets/#{timesheet}"}
       method="delete"

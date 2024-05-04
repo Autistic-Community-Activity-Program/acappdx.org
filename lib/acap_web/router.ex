@@ -2,6 +2,7 @@ defmodule AcapWeb.Router do
   use AcapWeb, :router
 
   import AcapWeb.UserAuth
+  import Phoenix.LiveDashboard.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -35,12 +36,8 @@ defmodule AcapWeb.Router do
     # If your application does not have an admins-only section yet,
     # you can use Plug.BasicAuth to set up some basic authentication
     # as long as you are also using SSL (which you should anyway).
-    import Phoenix.LiveDashboard.Router
-
     scope "/dev" do
       pipe_through :browser
-
-      live_dashboard "/dashboard", metrics: AcapWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
@@ -61,14 +58,17 @@ defmodule AcapWeb.Router do
   end
 
   scope "/", AcapWeb do
+    pipe_through [:browser, :require_authenticated_admin]
+    live_dashboard "/dashboard", metrics: AcapWeb.Telemetry
+    resources "/accounts", AccountsController, only: [:index, :new, :delete]
+  end
+
+  scope "/", AcapWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-
-    resources "/accounts", AccountsController, only: [:index, :new, :delete]
-
     resources "/timesheets", TimesheetController
   end
 
