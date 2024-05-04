@@ -17,7 +17,7 @@
   </div>
   <div class="flex flex-col bg-gray-400/5 p-8">
     <dt class="text-sm font-semibold leading-6 text-gray-600">
-      Total aproved hours for current week
+      Total aproved hours for current week <br /> <.current_week_styling week_starting={Date.beginning_of_week(Date.utc_today(), :sunday)} />
     </dt>
     <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900"><%= @total_accepted_hours_for_current_week %></dd>
   </div>
