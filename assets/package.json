@@ -1,10 +1,9 @@
 {
   "scripts": {
-    "watch_js": "esbuild js/app.js js/timesheet.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --sourcemap=inline  --watch",
+    "watch_js": "esbuild js/app.js js/timesheet.js js/timesheet_show.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --sourcemap=inline  --watch",
     "watch_css": "tailwindcss -i css/app.css -o ../priv/static/assets/app.css --watch",
-    "build_js": "esbuild js/app.js js/timesheet.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*  --minify",
+    "build_js": "esbuild js/app.js js/timesheet.js js/timesheet_show.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*  --minify",
     "build_css": "tailwindcss -i css/app.css -o ../priv/static/assets/app.css  --minify"
-
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
@@ -15,6 +14,7 @@
   },
   "dependencies": {
     "date-fns": "^3.6.0",
-    "phoenix_html": "^4.1.1"
+    "phoenix_html": "^4.1.1",
+    "plotly.js-dist-min": "^2.32.0"
   }
 }

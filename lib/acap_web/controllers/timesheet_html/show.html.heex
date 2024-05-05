@@ -1,9 +1,12 @@
+
 <.header>
-  Timesheet <%= @timesheet.id %>
+  Timesheet: <span class="text-purple-600 font-black"><%=@timesheet.week_starting |> day_of_the_week_formated()%></span><br />ID: <%= @timesheet.id %>
   <:subtitle>
     <div class="my-8">
       <.status status={@timesheet.status} />
-      <div class="mt-4"><%= @timesheet.user.email %></div>
+      <div class="mt-4"> Submitter: <%= @timesheet.user.email %></div>
+      <span class="block text-sm text-zinc-900 font-thin">Updated on: <%= @timesheet.updated_at |> NimbleStrftime.format("%I:%M %P, %a %m/%d/%y")  %></span>
+      <span class="block text-sm text-zinc-900 font-thin">Created on: <%= @timesheet.inserted_at |> NimbleStrftime.format("%I:%M %P, %a %m/%d/%y")  %></span>
     </div>
   </:subtitle>
   <:actions>
@@ -16,13 +19,16 @@
   </:actions>
 </.header>
 
+<div class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
+  <canvas class="h-96 mx-auto" id="myChart"></canvas>
+</div>
+
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
   <%= for %{day: day, hours: hours, notes: notes} <- @timesheet.entries do %>
-    <div id="timesheet_entries_6" class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
-      <span id="timesheet_entries_6_label"><%= day |> day_of_the_week_formated() %></span>
-      <div phx-feedback-for="timesheet[entries][6][hours]">
+    <div id="" class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
+      <span id=""><%= day |> day_of_the_week_formated() %></span>
+      <div>
         <span
-          for="timesheet_entries_6_hours"
           class="block text-sm font-semibold leading-6 text-zinc-800"
         >
           Hours: <%= hours %>
@@ -39,3 +45,30 @@
 </div>
 
 <.back navigate={~p"/timesheets"}>Back to timesheets</.back>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('myChart');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      datasets: [{
+        label: 'Hours loggeds',
+        data: [
+            <%= for %{hours: hours} <- @timesheet.entries do %>
+              <%= hours %>,
+            <% end %>
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>

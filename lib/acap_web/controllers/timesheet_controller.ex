@@ -5,7 +5,7 @@ defmodule AcapWeb.TimesheetController do
   alias Acap.Timesheets
   alias Acap.Timesheets.Timesheet
 
-  def export(%{assigns: %{current_user: current_user}} = conn , params) do
+  def export(%{assigns: %{current_user: current_user}} = conn, params) do
     dbg(params)
     filter_date = params |> Map.get("filter_date", nil)
     filter_status = params |> Map.get("filter_status", nil)
@@ -28,7 +28,6 @@ defmodule AcapWeb.TimesheetController do
   end
 
   def index(%{assigns: %{current_user: current_user}} = conn, params) do
-
     filter_date = params |> Map.get("week_starting", nil)
     filter_status = params |> Map.get("status", nil)
     filter_user = params |> Map.get("user", nil)
@@ -94,7 +93,11 @@ defmodule AcapWeb.TimesheetController do
 
   def show(%{assigns: %{current_user: current_user}} = conn, %{"id" => id}) do
     timesheet = Timesheets.get_timesheet!(id, current_user)
-    render(conn, :show, timesheet: timesheet)
+
+    render(conn, :show,
+      timesheet: timesheet,
+      assets_js_path: ~p"/assets/timesheet_show.js"
+    )
   end
 
   def edit(%{assigns: %{current_user: current_user}} = conn, %{"id" => id}) do
