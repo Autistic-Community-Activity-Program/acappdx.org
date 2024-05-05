@@ -57,7 +57,7 @@
         label: 'Hours loggeds',
         data: [
             <%= for %{hours: hours} <- @timesheet.entries do %>
-              <%= hours %>,
+            <%= hours %>,
             <% end %>
         ],
         borderWidth: 1

@@ -32,7 +32,6 @@ defmodule Acap.Timesheets do
   end
 
   def list_timesheets(%{id: user_id}, filter_date, filter_status, _filter_user) do
-
     query =
       from(t in Timesheet,
         where: t.user_id == ^user_id,
@@ -60,12 +59,15 @@ defmodule Acap.Timesheets do
   defp maybe_filter_status(q, "Draft") do
     where(q, [t], t.status == :draft)
   end
+
   defp maybe_filter_status(q, "Submitted") do
     where(q, [t], t.status == :submitted)
   end
+
   defp maybe_filter_status(q, "Accepted") do
     where(q, [t], t.status == :accepted)
   end
+
   defp maybe_filter_status(q, "Rejected") do
     where(q, [t], t.status == :rejected)
   end
@@ -224,7 +226,6 @@ defmodule Acap.Timesheets do
     total || 0
   end
 
-
   def total_pending_hours() do
     sql = """
     SELECT SUM((elem->>'hours')::float) AS total_hours
@@ -251,5 +252,94 @@ defmodule Acap.Timesheets do
     {:ok, %Postgrex.Result{rows: [[total]]}} = Repo.query(sql)
 
     total || 0
+  end
+
+  def group_hours() do
+    sql = """
+    SELECT
+      SUM((elem->>'hours')::float) AS total_hours,
+      week_starting
+    FROM timesheets,
+      LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+    GROUP BY week_starting
+    ORDER BY
+        week_starting DESC
+    """
+
+    {:ok, %Postgrex.Result{rows: weeks_starting_totals}} = Repo.query(sql)
+    weeks_starting_totals || []
+  end
+
+  def group_accepted_hours() do
+    sql = """
+    SELECT
+      SUM((elem->>'hours')::float) AS total_hours,
+      week_starting
+    FROM timesheets,
+      LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+      AND timesheets.status = 'accepted'
+    GROUP BY week_starting
+    ORDER BY
+        week_starting DESC
+    """
+
+    {:ok, %Postgrex.Result{rows: weeks_starting_totals}} = Repo.query(sql)
+    weeks_starting_totals || []
+  end
+
+  def group_draft_hours() do
+    sql = """
+    SELECT
+      SUM((elem->>'hours')::float) AS total_hours,
+      week_starting
+    FROM timesheets,
+      LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+      AND timesheets.status = 'draft'
+    GROUP BY week_starting
+    ORDER BY
+        week_starting DESC
+    """
+
+    {:ok, %Postgrex.Result{rows: weeks_starting_totals}} = Repo.query(sql)
+    weeks_starting_totals || []
+  end
+
+  def group_submitted_hours() do
+    sql = """
+    SELECT
+      SUM((elem->>'hours')::float) AS total_hours,
+      week_starting
+    FROM timesheets,
+      LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+      AND timesheets.status = 'submitted'
+    GROUP BY week_starting
+    ORDER BY
+        week_starting DESC
+    """
+
+    {:ok, %Postgrex.Result{rows: weeks_starting_totals}} = Repo.query(sql)
+    weeks_starting_totals || []
+  end
+
+  def group_rejected_hours() do
+    sql = """
+    SELECT
+      SUM((elem->>'hours')::float) AS total_hours,
+      week_starting
+    FROM timesheets,
+      LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+      AND timesheets.status = 'rejected'
+    GROUP BY week_starting
+    ORDER BY
+        week_starting DESC
+    """
+
+    {:ok, %Postgrex.Result{rows: weeks_starting_totals}} = Repo.query(sql)
+    weeks_starting_totals || []
   end
 end

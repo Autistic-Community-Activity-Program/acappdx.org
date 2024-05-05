@@ -38,7 +38,11 @@ defmodule AcapWeb.TimesheetController do
     total_accepted_hours = Timesheets.total_accepted_hours()
     total_accepted_hours_for_current_week = Timesheets.total_accepted_hours_for_current_week()
     all_users = Accounts.list_users()
-
+    weeks_starting_totals = Timesheets.group_hours()
+    weeks_starting_totals_accepted = Timesheets.group_accepted_hours()
+    weeks_starting_totals_draft = Timesheets.group_draft_hours()
+    weeks_starting_totals_submitted = Timesheets.group_submitted_hours()
+    weeks_starting_totals_rejected = Timesheets.group_rejected_hours()
     all_starting_weeks = Acap.DateUtils.all_sundays()
 
     render(conn, :index,
@@ -47,6 +51,11 @@ defmodule AcapWeb.TimesheetController do
       total_pending_hours: total_pending_hours,
       total_accepted_hours: total_accepted_hours,
       total_accepted_hours_for_current_week: total_accepted_hours_for_current_week,
+      weeks_starting_totals: weeks_starting_totals,
+      weeks_starting_totals_draft: weeks_starting_totals_draft,
+      weeks_starting_totals_accepted: weeks_starting_totals_accepted,
+      weeks_starting_totals_submitted: weeks_starting_totals_submitted,
+      weeks_starting_totals_rejected: weeks_starting_totals_rejected,
       all_users: all_users,
       all_starting_weeks: all_starting_weeks,
       filter_date: filter_date,

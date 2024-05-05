@@ -29,6 +29,81 @@
     </dd>
   </div>
 </dl>
+
+<div class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
+  <canvas class="h-96 mx-auto" id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('myChart');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [
+        <%= for data <- @weeks_starting_totals do %>
+        '<%= data |> List.last() |> NimbleStrftime.format("%m/%d/%y") %>',
+        <% end %>
+      ],
+      datasets: [
+      {
+        label: 'Totals Of Draft',
+        borderColor: '#faeebb',
+        backgroundColor: '#fefce8',
+        data: [
+        <%= for data <- @weeks_starting_totals_draft do %>
+        <%= data |> List.first() |> Float.to_string() %>,
+        <% end %>
+        ],
+        borderWidth: 1
+      },  
+      {
+        label: 'Totals Of Approved',
+        borderColor: '#c9f1d8',
+        backgroundColor: '#e8f9ee',
+        data: [
+        <%= for data <- @weeks_starting_totals_accepted do %>
+        <%= data |> List.first() |> Float.to_string() %>,
+        <% end %>
+        ],
+        borderWidth: 1
+      },
+      {
+        label: 'Totals Of Submitted',
+        borderColor: '#d0d4fd',
+        backgroundColor: '#f2f3ff',
+        data: [
+        <%= for data <- @weeks_starting_totals_submitted do %>
+        <%= data |> List.first() |> Float.to_string() %>,
+        <% end %>
+        ],
+        borderWidth: 1
+      },
+      {
+        label: 'Totals Of Rejected',
+        borderColor: '#fed6d6',
+        backgroundColor: '#fff0f0',
+        data: [
+        <%= for data <- @weeks_starting_totals_rejected do %>
+        <%= data |> List.first() |> Float.to_string() %>,
+        <% end %>
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+       scales: {
+            x: {
+                stacked: true
+            },
+            y: {
+                stacked: true
+            }
+        }
+      
+    }
+  });
+</script>
 <hr />
 <div class=" my-10 ">
   <form id="filters" action={~p"/timesheets"}>
