@@ -2,27 +2,27 @@
   :if={@current_user.admin}
   class="mb-12 grid grid-cols-1 gap-0.5 overflow-hidden shadow rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4"
 >
-  <div class="flex flex-col bg-zinc-400/5 p-8">
+  <div class="flex flex-col bg-[#f2f3ff] p-8">
     <dt class="text-sm font-semibold leading-6 text-gray-600">Timesheets waiting for review</dt>
     <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">
       <%= @total_pending_timesheets %>
     </dd>
   </div>
 
-  <div class="flex flex-col bg-gray-400/5 p-8">
+  <div class="flex flex-col bg-[#f2f3ff] p-8">
     <dt class="text-sm font-semibold leading-6 text-gray-600">Total hours pending approval</dt>
     <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">
       <%= @total_pending_hours %>
     </dd>
   </div>
-  <div class="flex flex-col bg-gray-400/5 p-8">
+  <div class="flex flex-col bg-[#e8f9ee] p-8">
     <dt class="text-sm font-semibold leading-6 text-gray-600">
       Total aproved hours for current week <br /> <.current_week_styling week_starting={Date.beginning_of_week(Date.utc_today(), :sunday)} />
     </dt>
     <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900"><%= @total_accepted_hours_for_current_week %></dd>
   </div>
 
-  <div class="flex flex-col bg-gray-400/5 p-8">
+  <div class="flex flex-col bg-[#e8f9ee] p-8">
     <dt class="text-sm font-semibold leading-6 text-gray-600">All approved hours total</dt>
     <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">
       <%= @total_accepted_hours %>
