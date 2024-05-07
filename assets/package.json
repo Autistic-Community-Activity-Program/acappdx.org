@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "watch_js": "esbuild js/app.js js/timesheet.js js/timesheet_show.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --sourcemap=inline  --watch",
+    "watch_js": "esbuild js/app.js js/timesheet.js js/timesheet_show.js js/user.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --sourcemap=inline  --watch",
     "watch_css": "tailwindcss -i css/app.css -o ../priv/static/assets/app.css --watch",
-    "build_js": "esbuild js/app.js js/timesheet.js js/timesheet_show.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*  --minify",
+    "build_js": "esbuild js/app.js js/timesheet.js js/timesheet_show.js js/user.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*  --minify",
     "build_css": "tailwindcss -i css/app.css -o ../priv/static/assets/app.css  --minify"
   },
   "devDependencies": {

@@ -473,7 +473,11 @@ defmodule AcapWeb.CoreComponents do
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
           class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-800"
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class={["group hover:bg-zinc-50 hover:shadow-xl"]} >
+          <tr
+            :for={row <- @rows}
+            id={@row_id && @row_id.(row)}
+            class={["group hover:bg-zinc-50 hover:shadow-xl"]}
+          >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               onclick={"window.location.href = '#{@row_click.(row)}';"}
@@ -583,13 +587,12 @@ defmodule AcapWeb.CoreComponents do
   end
 
   def current_week_styling(%{week_starting: week_starting} = assigns) do
-    if (Date.beginning_of_week(Date.utc_today(), :sunday) == week_starting) do
-    ~H"""
-    <span class="inline-flex items-center gap-x-1.5 px-2 py-1 text-xs font-medium text-gray-900">
-
-    <%=  @week_starting |> NimbleStrftime.format("%m/%d/%y") %> 🔹
-    </span>
-    """
+    if Date.beginning_of_week(Date.utc_today(), :sunday) == week_starting do
+      ~H"""
+      <span class="inline-flex items-center gap-x-1.5 px-2 py-1 text-xs font-medium text-gray-900">
+        <%= @week_starting |> NimbleStrftime.format("%m/%d/%y") %> 🔹
+      </span>
+      """
     else
       ~H"""
       <span class="inline-flex items-center gap-x-1.5 px-2 py-1 text-xs font-medium text-gray-900">
@@ -633,45 +636,67 @@ defmodule AcapWeb.CoreComponents do
 
   def cel_shader(%{hours: hours} = assigns) when hours == 0 do
     ~H"""
-      <span class="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-thin text-zinc-800 ring-1 ring-inset ring-zinc-600/20"><%= @hours %></span>
-    """
-  end
-  def cel_shader(%{hours: hours} = assigns) when hours <= 2 do
-    ~H"""
-      <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs  text-yellow-600 ring-1 ring-inset ring-yellow-500/20"><%= @hours %></span>
-    """
-  end
-  def cel_shader(%{hours: hours} = assigns) when hours <= 3 do
-    ~H"""
-      <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs  text-green-800 ring-1 ring-inset ring-green-600/20"><%= @hours %></span>
-    """
-  end
-  def cel_shader(%{hours: hours} = assigns) when hours <= 4 do
-    ~H"""
-      <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-800 ring-1 ring-inset ring-blue-600/20"><%= @hours %></span>
-    """
-  end
-  def cel_shader(%{hours: hours} = assigns) when hours <= 5 do
-    ~H"""
-      <span class="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-800 ring-1 ring-inset ring-indigo-600/20"><%= @hours %></span>
-    """
-  end
-  def cel_shader(%{hours: hours} = assigns) when hours <= 6 do
-    ~H"""
-      <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20"><%= @hours %></span>
-    """
-  end
-  def cel_shader(%{hours: hours} = assigns) when hours <= 8 do
-    ~H"""
-      <span class="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-800 ring-1 ring-inset ring-pink-600/20"><%= @hours %></span>
-    """
-  end
-  def cel_shader(%{hours: hours} = assigns) when hours > 8 do
-    ~H"""
-      <span class="inline-flex items-center rounded-md bg-red-100 px-2 py-1 text-xs font-bold text-red-600 ring-1 ring-inset ring-red-600"><%= @hours %></span>
+    <span class="inline-flex items-center rounded-md bg-zinc-50 px-2 py-1 text-xs font-thin text-zinc-800 ring-1 ring-inset ring-zinc-600/20">
+      <%= @hours %>
+    </span>
     """
   end
 
+  def cel_shader(%{hours: hours} = assigns) when hours <= 2 do
+    ~H"""
+    <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs  text-yellow-600 ring-1 ring-inset ring-yellow-500/20">
+      <%= @hours %>
+    </span>
+    """
+  end
+
+  def cel_shader(%{hours: hours} = assigns) when hours <= 3 do
+    ~H"""
+    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs  text-green-800 ring-1 ring-inset ring-green-600/20">
+      <%= @hours %>
+    </span>
+    """
+  end
+
+  def cel_shader(%{hours: hours} = assigns) when hours <= 4 do
+    ~H"""
+    <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs text-blue-800 ring-1 ring-inset ring-blue-600/20">
+      <%= @hours %>
+    </span>
+    """
+  end
+
+  def cel_shader(%{hours: hours} = assigns) when hours <= 5 do
+    ~H"""
+    <span class="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-800 ring-1 ring-inset ring-indigo-600/20">
+      <%= @hours %>
+    </span>
+    """
+  end
+
+  def cel_shader(%{hours: hours} = assigns) when hours <= 6 do
+    ~H"""
+    <span class="inline-flex items-center rounded-md bg-purple-50 px-2 py-1 text-xs font-medium text-purple-800 ring-1 ring-inset ring-purple-600/20">
+      <%= @hours %>
+    </span>
+    """
+  end
+
+  def cel_shader(%{hours: hours} = assigns) when hours <= 8 do
+    ~H"""
+    <span class="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-800 ring-1 ring-inset ring-pink-600/20">
+      <%= @hours %>
+    </span>
+    """
+  end
+
+  def cel_shader(%{hours: hours} = assigns) when hours > 8 do
+    ~H"""
+    <span class="inline-flex items-center rounded-md bg-red-100 px-2 py-1 text-xs font-bold text-red-600 ring-1 ring-inset ring-red-600">
+      <%= @hours %>
+    </span>
+    """
+  end
 
   ## JS Commands
 
@@ -755,7 +780,4 @@ defmodule AcapWeb.CoreComponents do
   def day_of_the_week_formated(date) do
     NimbleStrftime.format(date, "%a, %m/%d/%y")
   end
-
-
-
 end

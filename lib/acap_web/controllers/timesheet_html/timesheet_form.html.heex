@@ -1,10 +1,9 @@
-<.simple_form id={"timesheet"} :let={f} for={@changeset} action={@action}>
+<.simple_form :let={f} id="timesheet" for={@changeset} action={@action}>
   <.error :if={@changeset.action}>
     Oops, something went wrong! Please check the errors below.
   </.error>
 
   <div class="flex">
-    
     <div class="w-full sm:w-1/4 mr-4">
       <.input field={f[:week_starting]} type="date" label="Week starting" />
       <div id="notification" style="display:none; color: green; margin-top: 10px;"></div>
@@ -16,18 +15,19 @@
         type="select"
         label="Status"
         prompt="Choose a value"
-        options={@admin && [:draft, :submitted, :accepted, :rejected] || [:draft, :submitted]}
+        options={(@admin && [:draft, :submitted, :accepted, :rejected]) || [:draft, :submitted]}
       />
     </div>
-
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     <.inputs_for :let={fp} field={f[:entries]}>
       <div id={fp.id} class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
-        <span id={fp.id <> "_label"}><%= day_of_the_week_formated(fp.params["day"] || fp.data.day) %></span>
-        <.input field={fp[:hours]} label="Hours:" step="0.25" type="number" min="0" max="10"/>
-        <.input field={fp[:notes]} type="textarea" label="Notes:"/>
+        <span id={fp.id <> "_label"}>
+          <%= day_of_the_week_formated(fp.params["day"] || fp.data.day) %>
+        </span>
+        <.input field={fp[:hours]} label="Hours:" step="0.25" type="number" min="0" max="10" />
+        <.input field={fp[:notes]} type="textarea" label="Notes:" />
 
         <.input field={fp[:day]} type="hidden" />
       </div>

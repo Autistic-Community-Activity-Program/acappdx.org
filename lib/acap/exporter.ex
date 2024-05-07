@@ -17,12 +17,14 @@ defmodule Acap.Exporter do
     fields = [:entries_json | fields]
 
     # Extract and flatten the records to include embedded schema fields as a JSON string
-    rows = Enum.map(records, fn record ->
-      flatten_record_to_json(record, fields)
-    end)
+    rows =
+      Enum.map(records, fn record ->
+        flatten_record_to_json(record, fields)
+      end)
 
     # Convert rows to CSV
-    [fields |> Enum.map(&Atom.to_string/1)]  # Convert field atoms to strings for the header
+    # Convert field atoms to strings for the header
+    [fields |> Enum.map(&Atom.to_string/1)]
     |> AcapCSV.dump_to_iodata()
     |> Enum.concat(AcapCSV.dump_to_iodata(rows))
     |> Enum.join()
@@ -38,7 +40,8 @@ defmodule Acap.Exporter do
       :entries_json ->
         record
         |> Map.get(:entries, [])
-        |> Jason.encode!()  # Convert the list of entries to a JSON string
+        # Convert the list of entries to a JSON string
+        |> Jason.encode!()
 
       field ->
         record
@@ -46,7 +49,4 @@ defmodule Acap.Exporter do
         |> inspect
     end)
   end
-
-
-
 end

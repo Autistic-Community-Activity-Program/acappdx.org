@@ -1,0 +1,40 @@
+<.simple_form :let={f} id="user" for={@changeset} action={@action}>
+  <.error :if={@changeset.action}>
+    Oops, something went wrong! Please check the errors below.
+  </.error>
+
+  <div class="flex">
+    <div class="w-full sm:w-1/4 mr-4">
+      <div class="flex items-center">
+        <button
+          id="admin_btn"
+          type="button"
+          class={[
+            (@changeset.data.admin && "bg-indigo-600") || "bg-gray-200",
+            "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+          ]}
+          role="switch"
+          aria-checked="false"
+          aria-labelledby="annual-billing-label"
+        >
+          <span
+            aria-hidden="true"
+            class={[
+              (@changeset.data.admin && "translate-x-5") || "translate-x-0",
+              "pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+            ]}
+          >
+          </span>
+        </button>
+        <span class="ml-3 text-sm" id="annual-billing-label">
+          <span class="font-medium text-gray-900">Admin Privilege</span>
+        </span>
+      </div>
+      <.input field={f[:admin]} type="hidden" value={"#{@changeset.data.admin}"} />
+    </div>
+  </div>
+
+  <:actions>
+    <.button class="bg-blue-600">Save User</.button>
+  </:actions>
+</.simple_form>

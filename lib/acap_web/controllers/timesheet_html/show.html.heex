@@ -1,12 +1,19 @@
-
 <.header>
-  Timesheet: <span class="text-purple-600 font-black"><%=@timesheet.week_starting |> day_of_the_week_formated()%></span><br />ID: <%= @timesheet.id %>
+  Timesheet:
+  <span class="text-purple-600 font-black">
+    <%= @timesheet.week_starting |> day_of_the_week_formated() %>
+  </span>
+  <br />ID: <%= @timesheet.id %>
   <:subtitle>
     <div class="my-8">
       <.status status={@timesheet.status} />
-      <div class="mt-4"> Submitter: <%= @timesheet.user.email %></div>
-      <span class="block text-sm text-zinc-900 font-thin">Updated on: <%= @timesheet.updated_at |> NimbleStrftime.format("%I:%M %P, %a %m/%d/%y")  %></span>
-      <span class="block text-sm text-zinc-900 font-thin">Created on: <%= @timesheet.inserted_at |> NimbleStrftime.format("%I:%M %P, %a %m/%d/%y")  %></span>
+      <div class="mt-4">Submitter: <%= @timesheet.user.email %></div>
+      <span class="block text-sm text-zinc-900 font-thin">
+        Updated on: <%= @timesheet.updated_at |> NimbleStrftime.format("%I:%M %P, %a %m/%d/%y") %>
+      </span>
+      <span class="block text-sm text-zinc-900 font-thin">
+        Created on: <%= @timesheet.inserted_at |> NimbleStrftime.format("%I:%M %P, %a %m/%d/%y") %>
+      </span>
     </div>
   </:subtitle>
   <:actions>
@@ -14,7 +21,9 @@
       :if={@current_user.admin || @timesheet.status != :accpeted}
       href={~p"/timesheets/#{@timesheet}/edit"}
     >
-      <.button class="bg-blue-600">Edit timesheet <.icon name="hero-pencil-square h-4 w-4 ml-2" /></.button> 
+      <.button class="bg-blue-600">
+        Edit timesheet <.icon name="hero-pencil-square h-4 w-4 ml-2" />
+      </.button>
     </.link>
   </:actions>
 </.header>
@@ -28,16 +37,14 @@
     <div id="" class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
       <span id=""><%= day |> day_of_the_week_formated() %></span>
       <div>
-        <span
-          class="block text-sm font-semibold leading-6 text-zinc-800"
-        >
+        <span class="block text-sm font-semibold leading-6 text-zinc-800">
           Hours: <%= hours %>
         </span>
         <div class="my-6">
-        <h3>Notes:</h3>
-        <p>
-          <%= notes %>
-        </p>
+          <h3>Notes:</h3>
+          <p>
+            <%= notes %>
+          </p>
         </div>
       </div>
     </div>
@@ -46,7 +53,8 @@
 
 <.back navigate={~p"/timesheets"}>Back to timesheets</.back>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js">
+</script>
 <script>
   const ctx = document.getElementById('myChart');
   new Chart(ctx, {

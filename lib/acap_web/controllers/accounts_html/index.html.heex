@@ -1,13 +1,9 @@
-
-
 <.header>
   Listing Accounts
   <:actions>
     <.link href={~p"/accounts/new"}>
       <.button class="bg-indigo-600 hover:shadow-lg">
-      Invite Account
-      <.icon name="hero-plus" class="w-5 h-5"/>
-
+        Invite Account <.icon name="hero-plus" class="w-5 h-5" />
       </.button>
     </.link>
   </:actions>
@@ -20,15 +16,14 @@
   <:col :let={user} label="Email">
     <%= user.email %>
   </:col>
-    <:col :let={user} label="Created on">
+  <:col :let={user} label="Created on">
     <%= user.inserted_at %>
   </:col>
-  
+
   <:action :let={user}>
     <div class="sr-only">
       <.link navigate={~p"/accounts/#{user}"}>Show</.link>
     </div>
-
   </:action>
   <:action :let={user}>
     <.link
@@ -37,6 +32,8 @@
       href={~p"/accounts/#{user}"}
       method="delete"
       data-confirm="Are you sure?"
-    ><.icon name="hero-trash h-4 w-4" /></.link>
+    >
+      <.icon name="hero-trash h-4 w-4" />
+    </.link>
   </:action>
 </.table>

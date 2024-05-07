@@ -37,7 +37,9 @@ defmodule Acap.TimesheetsTest do
       timesheet = timesheet_fixture()
       update_attrs = %{status: :submitted, week_starting: ~D[2024-04-29], entries: %{}}
 
-      assert {:ok, %Timesheet{} = timesheet} = Timesheets.update_timesheet(timesheet, update_attrs)
+      assert {:ok, %Timesheet{} = timesheet} =
+               Timesheets.update_timesheet(timesheet, update_attrs)
+
       assert timesheet.status == :submitted
       assert timesheet.week_starting == ~D[2024-04-29]
       assert timesheet.entries == %{}

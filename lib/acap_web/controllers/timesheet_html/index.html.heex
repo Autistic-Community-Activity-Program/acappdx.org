@@ -17,9 +17,12 @@
   </div>
   <div class="flex flex-col bg-[#e8f9ee] p-8">
     <dt class="text-sm font-semibold leading-6 text-gray-600">
-      Total aproved hours for current week <br /> <.current_week_styling week_starting={Date.beginning_of_week(Date.utc_today(), :sunday)} />
+      Total aproved hours for current week <br />
+      <.current_week_styling week_starting={Date.beginning_of_week(Date.utc_today(), :sunday)} />
     </dt>
-    <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900"><%= @total_accepted_hours_for_current_week %></dd>
+    <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900">
+      <%= @total_accepted_hours_for_current_week %>
+    </dd>
   </div>
 
   <div class="flex flex-col bg-[#e8f9ee] p-8">
@@ -34,7 +37,8 @@
   <canvas class="h-96 mx-auto" id="myChart"></canvas>
 </div>
 
-<script :if={@current_user.admin} src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script :if={@current_user.admin} src="https://cdn.jsdelivr.net/npm/chart.js">
+</script>
 <script :if={@current_user.admin}>
   const ctx = document.getElementById('myChart');
   new Chart(ctx, {
@@ -210,7 +214,6 @@
             event.preventDefault();
             document.getElementById('week_starting').value = ""
             document.getElementById('status').value = ""
-          
 
             document.getElementById('filters').submit();
           }

@@ -15,14 +15,12 @@ defmodule Acap.Timesheets.Timesheet.TimesheetEntry do
     |> cast(attrs, [:day, :hours, :notes])
     |> validate_required([:day, :hours])
   end
-
 end
 
 defmodule Acap.Timesheets.Timesheet do
   use Ecto.Schema
   import Ecto.Changeset
   alias __MODULE__.TimesheetEntry
-
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -46,6 +44,10 @@ defmodule Acap.Timesheets.Timesheet do
       required: true
     )
     |> validate_required([:week_starting, :status])
-    |> unique_constraint(:week_starting, name: :timesheets_week_starting_user_id_index, message: "You already have a timesheet for this date. You can only save one timesheet per work week.")
+    |> unique_constraint(:week_starting,
+      name: :timesheets_week_starting_user_id_index,
+      message:
+        "You already have a timesheet for this date. You can only save one timesheet per work week."
+    )
   end
 end

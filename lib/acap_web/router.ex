@@ -62,8 +62,7 @@ defmodule AcapWeb.Router do
     live_dashboard "/dashboard", metrics: AcapWeb.Telemetry
 
     post "/timesheets/export", TimesheetController, :export
-    resources "/accounts", AccountsController, only: [:index, :new, :delete]
-
+    resources "/accounts", AccountsController
   end
 
   scope "/", AcapWeb do
