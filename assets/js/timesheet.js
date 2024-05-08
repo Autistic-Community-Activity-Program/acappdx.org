@@ -56,7 +56,7 @@ function new_segment_template(entry_index, segment_index) {
         Start:
         </label>
         <input type="time" name="timesheet[entries][${entry_index}][segments][${segment_index}][start]" id="timesheet_entries_${entry_index}_segments_${segment_index}_start"
-        class="mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 border-zinc-300 focus:border-zinc-400"
+        class="start_time mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 border-zinc-300 focus:border-zinc-400"
         placeholder="00:00 AM|PM">
     </div>
     
@@ -66,7 +66,7 @@ function new_segment_template(entry_index, segment_index) {
         Stop:
         </label>
         <input type="time" name="timesheet[entries][${entry_index}][segments][${segment_index}][stop]" id="timesheet_entries_${entry_index}_segments_${segment_index}_stop"
-        class="mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 border-zinc-300 focus:border-zinc-400"
+        class="stop_time mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 border-zinc-300 focus:border-zinc-400"
         placeholder="00:00 AM|PM">
     </div>
     <label class="cursor-pointer p-2 bg-blue-600 text-white mt-6 block w-20 text-center rounded-md shadow">
@@ -77,16 +77,15 @@ function new_segment_template(entry_index, segment_index) {
     `);
 };
 
-function list_to_delete(){
-    
-}
 
 document.addEventListener("DOMContentLoaded", function () {
     const week_starting = document.getElementById("timesheet_week_starting");
     week_starting.addEventListener('change', handleDateChange);
-
     document.querySelectorAll('.delete_segement_btn').forEach(button => {
+
         button.addEventListener('change', function () {
+            this.parentElement.parentElement.parentElement.parentElement.getElementsByClassName('add_segemnt_btn')[0].classList.remove("hidden") 
+
             console.log("click");
             if (this.checked) {
                 const item = this.closest('.segment');
@@ -100,14 +99,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelectorAll('.add_segemnt_btn').forEach((button, entry_index) => {
         button.addEventListener('click', function (event) {
+            this.classList.add("hidden") 
+
             event.preventDefault();
             const segment_index = this.parentElement.parentElement.getElementsByClassName("segment").length
-            const segements = this.parentElement.parentElement.querySelector(".segments")
-            segements.innerHTML += new_segment_template(entry_index, segment_index)
+            const segments = this.parentElement.parentElement.querySelector(".segments")
+
+            segments.insertAdjacentHTML('beforeend', new_segment_template(entry_index, segment_index));
             
             document.querySelectorAll('.delete_segement_btn').forEach(button => {
+
                 button.addEventListener('change', function () {
-                    console.log("click");
+                    this.parentElement.parentElement.parentElement.parentElement.getElementsByClassName('add_segemnt_btn')[0].classList.remove("hidden") 
+
                     if (this.checked) {
                         const item = this.closest('.segment');
                         item.classList.add('transition-opacity', 'duration-500', 'ease-in-out', 'opacity-0');
@@ -117,6 +121,35 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
             });
+
+            document.querySelectorAll('.segments input[type="time"]').forEach(input => {
+                input.addEventListener('change', validateTimes);
+            });
+            
+
+            function validateTimes(event) {
+                const startTime = this.parentElement.parentElement.getElementsByClassName('start_time')[0] && this.parentElement.parentElement.getElementsByClassName('start_time')[0].value;
+                const endTime   = this.parentElement.parentElement.getElementsByClassName('stop_time')[0] && this.parentElement.parentElement.getElementsByClassName('stop_time')[0].value;
+                
+                console.debug(startTime, endTime)
+                // Check if both times are selected
+                if (startTime === "" || endTime === "") {
+                    this.parentElement.parentElement.parentElement.parentElement.getElementsByClassName('add_segemnt_btn')[0].classList.add("hidden") 
+                }else{
+                    this.parentElement.parentElement.parentElement.parentElement.getElementsByClassName('add_segemnt_btn')[0].classList.remove("hidden") 
+                }
+
+                if (startTime && endTime) {
+                    // Convert time strings HH:mm to date objects for comparison
+                    const start = new Date('1970-01-01T' + startTime + 'Z');
+                    const end = new Date('1970-01-01T' + endTime + 'Z');
+
+                    // Validate that end time does not precede end time
+                    if (start >= end) {
+                        alert('End time must not precede start time.');
+                    }
+                }
+            }
         });
     });
 

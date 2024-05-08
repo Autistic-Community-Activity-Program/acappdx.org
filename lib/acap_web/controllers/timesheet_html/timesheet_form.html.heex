@@ -28,15 +28,15 @@
           <%= day_of_the_week_formated(entry.params["day"] || entry.data.day) %>
         </span>
         <div class="flex-auto"></div>
-        <button class="add_segemnt_btn bg-blue-600 text-white p-1 rounded-md right-0 font-black"><.icon name="hero-plus" class="w-4 h-4" /></button>
+        <button class="add_segemnt_btn bg-blue-600 text-white rounded-md font-black w-6 shadow"><.icon name="hero-plus" class="w-4 h-4" /></button>
         </div>
 
         <div class="segments">
         <.inputs_for :let={segment} field={entry[:segments]}>
-          <div class="segment border border-zinc-300 rounded-md shadow p-4 my-4">
+          <div class="segment border border-zinc-300 rounded-md shadow p-4 my-4 mr-2">
           <input type="hidden" name={"timesheet[entries][#{entry.index}][segments_sort][]"} value={segment.index} />
-          <.input type="text" field={segment[:start]} type="time" label="Start:" placeholder="00:00 AM|PM" />
-          <.input type="text" field={segment[:stop]}  type="time" label="Stop:" placeholder="00:00 AM|PM" class="mb-8"/>
+          <.input type="text" field={segment[:start]} type="time" label="Start:" placeholder="00:00 AM|PM" class="start_time" />
+          <.input type="text" field={segment[:stop]}  type="time" label="Stop:" placeholder="00:00 AM|PM" class="stop_time" />
           <label class="cursor-pointer p-2 bg-blue-600 text-white mt-6 block w-20 text-center rounded-md shadow">
             <input type="checkbox" class="delete_segement_btn hidden " name={"timesheet[entries][#{entry.index}][segments_drop][]"}  value={segment.index} />
             delete
@@ -45,7 +45,6 @@
         </.inputs_for>
         </div>
 
-        <.input field={entry[:hours]} label="Hours:" step="0.25" type="number" min="0" max="10" />
         <.input field={entry[:notes]} type="textarea" label="Notes:" />
         <.input field={entry[:day]} type="hidden" />
       </div>

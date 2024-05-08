@@ -33,7 +33,7 @@ defmodule Acap.Timesheets.Timesheet.TimesheetEntry do
   def changeset(entry, attrs) do
     entry
     |> cast(attrs, [:day, :hours, :notes])
-    |> validate_required([:day, :hours])
+    |> validate_required([:day])
     |> cast_embed(:segments,
       sort_param: :segments_sort,
       drop_param: :segments_drop,
