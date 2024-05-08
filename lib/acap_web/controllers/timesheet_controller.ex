@@ -72,7 +72,10 @@ defmodule AcapWeb.TimesheetController do
         %{
           day: Date.add(start_of_week, i),
           hours: 0.0,
-          notes: ""
+          notes: "",
+          segments: [
+            
+          ]
         }
       end
 

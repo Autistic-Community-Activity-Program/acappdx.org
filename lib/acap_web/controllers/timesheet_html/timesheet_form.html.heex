@@ -4,12 +4,12 @@
   </.error>
 
   <div class="flex">
-    <div class="w-full sm:w-1/4 mr-4">
+    <div class="w-full sm:w-1/2 mr-4">
       <.input field={f[:week_starting]} type="date" label="Week starting" />
       <div id="notification" style="display:none; color: green; margin-top: 10px;"></div>
     </div>
 
-    <div class="w-full sm:w-1/4">
+    <div class="w-full sm:w-1/2">
       <.input
         field={f[:status]}
         type="select"
@@ -20,16 +20,34 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-    <.inputs_for :let={fp} field={f[:entries]}>
-      <div id={fp.id} class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
-        <span id={fp.id <> "_label"}>
-          <%= day_of_the_week_formated(fp.params["day"] || fp.data.day) %>
+  <div class="">
+    <.inputs_for :let={entry} field={f[:entries]}>
+      <div id={entry.id} class="my-12 mr-2 p-4 border border-zinc-300 rounded-md shadow">
+        <div class="flex">
+        <span id={entry.id <> "_label"}>
+          <%= day_of_the_week_formated(entry.params["day"] || entry.data.day) %>
         </span>
-        <.input field={fp[:hours]} label="Hours:" step="0.25" type="number" min="0" max="10" />
-        <.input field={fp[:notes]} type="textarea" label="Notes:" />
+        <div class="flex-auto"></div>
+        <button class="add_segemnt_btn bg-blue-600 text-white p-1 rounded-md right-0 font-black"><.icon name="hero-plus" class="w-4 h-4" /></button>
+        </div>
 
-        <.input field={fp[:day]} type="hidden" />
+        <div class="segments">
+        <.inputs_for :let={segment} field={entry[:segments]}>
+          <div class="segment border border-zinc-300 rounded-md shadow p-4 my-4">
+          <input type="hidden" name={"timesheet[entries][#{entry.index}][segments_sort][]"} value={segment.index} />
+          <.input type="text" field={segment[:start]} type="time" label="Start:" placeholder="00:00 AM|PM" />
+          <.input type="text" field={segment[:stop]}  type="time" label="Stop:" placeholder="00:00 AM|PM" class="mb-8"/>
+          <label class="cursor-pointer p-2 bg-blue-600 text-white mt-6 block w-20 text-center rounded-md shadow">
+            <input type="checkbox" class="delete_segement_btn hidden " name={"timesheet[entries][#{entry.index}][segments_drop][]"}  value={segment.index} />
+            delete
+          </label>
+        </div>
+        </.inputs_for>
+        </div>
+
+        <.input field={entry[:hours]} label="Hours:" step="0.25" type="number" min="0" max="10" />
+        <.input field={entry[:notes]} type="textarea" label="Notes:" />
+        <.input field={entry[:day]} type="hidden" />
       </div>
     </.inputs_for>
   </div>
