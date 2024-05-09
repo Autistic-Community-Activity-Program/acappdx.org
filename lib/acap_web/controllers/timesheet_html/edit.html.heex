@@ -1,15 +1,14 @@
 <div class="prose mx-auto">
+  <.header>
+    Edit Timesheet <%= @timesheet.id %>
+    <:subtitle>Use this form to manage timesheet records in your database.</:subtitle>
+  </.header>
 
-<.header>
-  Edit Timesheet <%= @timesheet.id %>
-  <:subtitle>Use this form to manage timesheet records in your database.</:subtitle>
-</.header>
+  <.timesheet_form
+    changeset={@changeset}
+    action={~p"/timesheets/#{@timesheet}"}
+    admin={@current_user.admin}
+  />
 
-<.timesheet_form
-  changeset={@changeset}
-  action={~p"/timesheets/#{@timesheet}"}
-  admin={@current_user.admin}
-/>
-
-<.back navigate={~p"/timesheets"}>Back to timesheets</.back>
+  <.back navigate={~p"/timesheets"}>Back to timesheets</.back>
 </div>

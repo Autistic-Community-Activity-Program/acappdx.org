@@ -6,7 +6,6 @@ defmodule AcapWeb.TimesheetController do
   alias Acap.Timesheets.Timesheet
 
   def export(%{assigns: %{current_user: current_user}} = conn, params) do
-    dbg(params)
     filter_date = params |> Map.get("filter_date", nil)
     filter_status = params |> Map.get("filter_status", nil)
     filter_user = params |> Map.get("filter_user", nil)
@@ -73,9 +72,7 @@ defmodule AcapWeb.TimesheetController do
           day: Date.add(start_of_week, i),
           hours: 0.0,
           notes: "",
-          segments: [
-            
-          ]
+          segments: []
         }
       end
 

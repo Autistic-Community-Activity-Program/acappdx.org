@@ -1,10 +1,10 @@
 <div class="prose mx-auto">
-<.header>
-  New Timesheet
-  <:subtitle>Use this form to manage timesheet records in your database.</:subtitle>
-</.header>
+  <.header>
+    New Timesheet
+    <:subtitle>Use this form to manage timesheet records in your database.</:subtitle>
+  </.header>
 
-<.timesheet_form changeset={@changeset} action={~p"/timesheets"} admin={@current_user.admin} />
+  <.timesheet_form changeset={@changeset} action={~p"/timesheets"} admin={@current_user.admin} />
 
-<.back navigate={~p"/timesheets"}>Back to timesheets</.back>
+  <.back navigate={~p"/timesheets"}>Back to timesheets</.back>
 </div>
