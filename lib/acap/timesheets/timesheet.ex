@@ -63,6 +63,7 @@ defmodule Acap.Timesheets.Timesheet.TimesheetEntry do
     )
     |> validate_no_overlap_of_segments()
     |> calc_total_time_in_hours()
+    |> maybe_require_notes()
   end
 
   defp validate_no_overlap_of_segments(%Ecto.Changeset{valid?: true} = cs) do
@@ -125,6 +126,19 @@ defmodule Acap.Timesheets.Timesheet.TimesheetEntry do
   end
 
   defp calc_total_time_in_hours(cs), do: cs
+
+  defp maybe_require_notes(%Ecto.Changeset{valid?: true} = cs) do
+    hours = get_field(cs, :hours)
+    notes = get_field(cs, :notes) || ""
+
+    if hours > 8.0 && notes == "" do
+      add_error(cs, :notes, "Notes required for more than 8 hours in a day")
+    else
+      cs
+    end
+
+  end
+  defp maybe_require_notes(cs), do: cs
 end
 
 defmodule Acap.Timesheets.Timesheet do
@@ -139,7 +153,7 @@ defmodule Acap.Timesheets.Timesheet do
     field :week_starting, :date
     belongs_to :user, Acap.Accounts.User
     embeds_many :entries, TimesheetEntry, on_replace: :delete
-
+    
     timestamps(type: :utc_datetime)
   end
 
