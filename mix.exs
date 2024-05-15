@@ -51,7 +51,9 @@ defmodule Acap.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:plug_cowboy, "~> 2.5"},
       {:nimble_strftime, "~> 0.1.1"},
-      {:nimble_csv, "~> 1.0"}
+      {:nimble_csv, "~> 1.0"},
+      {:sentry, "~> 10.2.0"},
+      {:hackney, "~> 1.8"}
     ]
   end
 

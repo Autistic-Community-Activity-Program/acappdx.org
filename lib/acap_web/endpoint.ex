@@ -1,5 +1,6 @@
 defmodule AcapWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :acap
+  use Sentry.PlugCapture
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
@@ -44,6 +45,7 @@ defmodule AcapWeb.Endpoint do
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
+  plug Sentry.PlugContext
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options

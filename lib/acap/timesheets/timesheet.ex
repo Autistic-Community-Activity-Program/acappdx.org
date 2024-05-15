@@ -136,8 +136,8 @@ defmodule Acap.Timesheets.Timesheet.TimesheetEntry do
     else
       cs
     end
-
   end
+
   defp maybe_require_notes(cs), do: cs
 end
 
@@ -153,7 +153,7 @@ defmodule Acap.Timesheets.Timesheet do
     field :week_starting, :date
     belongs_to :user, Acap.Accounts.User
     embeds_many :entries, TimesheetEntry, on_replace: :delete
-    
+
     timestamps(type: :utc_datetime)
   end
 

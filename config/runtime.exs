@@ -115,4 +115,13 @@ if config_env() == :prod do
   #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+
+  sentry_dns =
+    System.get_env("SENTRY_DNS") ||
+      raise """
+      environment variable SENTRY_DNS is missing.
+      """
+
+  config :sentry,
+    dsn: sentry_dns
 end
