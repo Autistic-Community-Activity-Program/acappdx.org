@@ -1,0 +1,17 @@
+<div class="mx-auto max-w-sm">
+  <.header class="text-center">
+    2FA Check
+  </.header>
+
+  <.simple_form :let={f} for={@conn.params["user"]} as={:user} action={~p"/users/log_in/2fa"}>
+    <.error :if={@error_message}><%= @error_message %></.error>
+
+    <.input field={f[:totp_check]} label="One time password (2FA)" required />
+
+    <:actions>
+      <.button phx-disable-with="Logging in..." class="bg-indigo-600 w-full">
+        Log in <span aria-hidden="true">→</span>
+      </.button>
+    </:actions>
+  </.simple_form>
+</div>

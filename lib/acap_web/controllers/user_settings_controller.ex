@@ -7,7 +7,42 @@ defmodule AcapWeb.UserSettingsController do
   plug :assign_email_and_password_changesets
 
   def edit(conn, _params) do
-    render(conn, :edit)
+    user = conn.assigns.current_user
+
+    user = conn.assigns.current_user
+    secret = NimbleTOTP.secret()
+
+    qr_code_uri = NimbleTOTP.otpauth_uri("acappdx.org:#{user.email}", secret)
+    {:ok, qr_code_uri} = qr_code_uri |> QRCode.create() |> QRCode.render() |> QRCode.to_base64()
+
+    render(conn, :edit,
+      totp_changeset: Accounts.change_user_totp(user),
+      qr_code_uri: qr_code_uri,
+      totp_secret: secret |> Base.encode32(padding: false)
+    )
+  end
+
+  def update(conn, %{"action" => "update_totp"} = params) do
+    %{"user" => %{"totp_secret" => secret} = user_params} = params
+
+    user = conn.assigns.current_user
+
+    qr_code_uri = NimbleTOTP.otpauth_uri("acappdx.org:#{user.email}", secret)
+    {:ok, qr_code_uri} = qr_code_uri |> QRCode.create() |> QRCode.render() |> QRCode.to_base64()
+
+
+    case Accounts.update_user_totp(user, user_params) do
+      {:ok, _applied_user} ->
+        conn
+        |> put_flash(
+          :info,
+          "2FA is now enabled for this account"
+        )
+        |> redirect(to: ~p"/")
+
+      {:error, changeset} ->
+        render(conn, :edit, totp_changeset: changeset, qr_code_uri: qr_code_uri, totp_secret: secret)
+    end
   end
 
   def update(conn, %{"action" => "update_email"} = params) do

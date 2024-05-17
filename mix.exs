@@ -53,7 +53,9 @@ defmodule Acap.MixProject do
       {:nimble_strftime, "~> 0.1.1"},
       {:nimble_csv, "~> 1.0"},
       {:sentry, "~> 10.2.0"},
-      {:hackney, "~> 1.8"}
+      {:hackney, "~> 1.8"},
+      {:nimble_totp, "~> 1.0"},
+      {:qr_code, "~> 3.0"}
     ]
   end
 

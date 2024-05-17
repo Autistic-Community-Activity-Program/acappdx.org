@@ -9,6 +9,8 @@ defmodule Acap.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     field :admin, :boolean, default: false
+    field :totp_secret, :string, redact: true
+    field :totp_secret_check, :string, virtual: true, redact: true
 
     timestamps(type: :utc_datetime)
   end
@@ -16,7 +18,7 @@ defmodule Acap.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:admin])
+    |> cast(attrs, [:admin, :totp_secret])
   end
 
   @doc """
@@ -44,7 +46,7 @@ defmodule Acap.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :totp_secret])
     |> validate_email(opts)
     |> validate_password(opts)
   end
@@ -163,4 +165,27 @@ defmodule Acap.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+
+  @doc """
+  """
+  def totp_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:totp_secret, :totp_secret_check])
+    |> validate_totp(opts)
+  end
+
+  def validate_totp(
+        cs = %Ecto.Changeset{changes: %{totp_secret: totp_secret, totp_secret_check: secret_check}},
+        _opt
+      ) do
+    secret = totp_secret |> Base.decode32!(padding: false)
+
+    if NimbleTOTP.valid?(secret, secret_check) do
+      cs
+    else
+      cs |> add_error(:totp_secret_check, "Code didn't match")
+    end
+  end
+
+  def validate_totp(cs, _), do: cs
 end

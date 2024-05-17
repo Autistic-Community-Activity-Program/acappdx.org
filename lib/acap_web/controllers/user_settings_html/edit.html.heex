@@ -4,6 +4,29 @@
 </.header>
 
 <div class="space-y-12 divide-y">
+  <div :if={!@current_user.totp_secret}>
+    <h2 class="font-black">(2FA)</h2>
+    <span>Please enable Two-factor authentication</span>
+    <.simple_form :let={f} for={@totp_changeset} action={~p"/users/settings"} id="update_totp">
+      <.error :if={@totp_changeset.action}>
+        Oops, something went wrong! Please check the errors below.
+      </.error>
+
+      <img
+        class="w-40 h-40 my-8"
+        src={"data:image/svg+xml;base64," <> @qr_code_uri}
+        alt="QR Code for 2FA"
+      />
+
+      <input type="hidden" name="action" value="update_totp" />
+      <.input field={f[:totp_secret]} label="Secret" value={@totp_secret} />
+      <.input field={f[:totp_secret_check]} label="One Time pass from Authenticator" />
+
+      <:actions>
+        <.button phx-disable-with="Changing..." class="bg-indigo-600">Enable 2FA</.button>
+      </:actions>
+    </.simple_form>
+  </div>
   <div>
     <.simple_form :let={f} for={@email_changeset} action={~p"/users/settings"} id="update_email">
       <.error :if={@email_changeset.action}>
