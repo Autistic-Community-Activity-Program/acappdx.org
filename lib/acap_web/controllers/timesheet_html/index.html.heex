@@ -44,11 +44,7 @@
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: [
-        <%= for data <- @weeks_starting_totals do %>
-        '<%= data |> List.last() |> NimbleStrftime.format("%m/%d/%y") %>',
-        <% end %>
-      ],
+
       datasets: [
       {
         label: 'Totals Of Draft',
@@ -56,7 +52,7 @@
         backgroundColor: '#fefce8',
         data: [
         <%= for data <- @weeks_starting_totals_draft do %>
-        <%= data |> List.first() |> Float.to_string() %>,
+          {y: <%= data |> List.first() |> Float.to_string() %>, x: "<%= data |> List.last() |> NimbleStrftime.format("%m/%d/%y") %>"},
         <% end %>
         ],
         borderWidth: 1
@@ -67,7 +63,7 @@
         backgroundColor: '#e8f9ee',
         data: [
         <%= for data <- @weeks_starting_totals_accepted do %>
-        <%= data |> List.first() |> Float.to_string() %>,
+          {y: <%= data |> List.first() |> Float.to_string() %>, x: "<%= data |> List.last() |> NimbleStrftime.format("%m/%d/%y") %>"},
         <% end %>
         ],
         borderWidth: 1
@@ -78,7 +74,7 @@
         backgroundColor: '#f2f3ff',
         data: [
         <%= for data <- @weeks_starting_totals_submitted do %>
-        <%= data |> List.first() |> Float.to_string() %>,
+          {y: <%= data |> List.first() |> Float.to_string() %>, x: "<%= data |> List.last() |> NimbleStrftime.format("%m/%d/%y") %>"},
         <% end %>
         ],
         borderWidth: 1
@@ -89,7 +85,7 @@
         backgroundColor: '#fff0f0',
         data: [
         <%= for data <- @weeks_starting_totals_rejected do %>
-        <%= data |> List.first() |> Float.to_string() %>,
+          {y: <%= data |> List.first() |> Float.to_string() %>, x: "<%= data |> List.last() |> NimbleStrftime.format("%m/%d/%y") %>"},
         <% end %>
         ],
         borderWidth: 1
