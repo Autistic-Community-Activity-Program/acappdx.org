@@ -32,16 +32,19 @@ defmodule AcapWeb.TimesheetController do
     filter_user = params |> Map.get("user", nil)
 
     timesheets = Timesheets.list_timesheets(current_user, filter_date, filter_status, filter_user)
+
     total_pending_timesheets = Timesheets.total_pending_timesheets()
     total_pending_hours = Timesheets.total_pending_hours()
     total_accepted_hours = Timesheets.total_accepted_hours()
     total_accepted_hours_for_current_week = Timesheets.total_accepted_hours_for_current_week()
+
     all_users = Accounts.list_users()
+
     weeks_starting_totals = Timesheets.group_hours()
-    weeks_starting_totals_accepted = Timesheets.group_accepted_hours()
-    weeks_starting_totals_draft = Timesheets.group_draft_hours()
-    weeks_starting_totals_submitted = Timesheets.group_submitted_hours()
-    weeks_starting_totals_rejected = Timesheets.group_rejected_hours()
+    weeks_starting_totals_accepted = Timesheets.group_accepted_hours()      |> dbg()
+    weeks_starting_totals_draft = Timesheets.group_draft_hours()            |> dbg()
+    weeks_starting_totals_submitted = Timesheets.group_submitted_hours()    |> dbg()
+    weeks_starting_totals_rejected = Timesheets.group_rejected_hours()      |> dbg()
     all_starting_weeks = Acap.DateUtils.all_sundays()
 
     render(conn, :index,
