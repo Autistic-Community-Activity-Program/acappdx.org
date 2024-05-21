@@ -20,8 +20,10 @@ const handleDateChange = debounce(function (event) {
         // Loop over the IDs from 0 to 6 and update related fields for each entry
         for (let i = 0; i <= 6; i++) {
             const date = addDays(weekStart, i);
+            console.debug(i)
+            console.debug(date)
             document.getElementById(`timesheet_entries_${i}_label`).textContent = `${format(date, 'EEE, MM/dd/yy')}`;
-            document.getElementById(`timesheet_entries_${i}_hours`).value = 0.0;
+            // document.getElementById(`timesheet_entries_${i}_hours`).value = 0.0;
             document.getElementById(`timesheet_entries_${i}_day`).value = format(date, 'yyyy-MM-dd');
         }
     }
