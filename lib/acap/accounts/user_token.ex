@@ -11,7 +11,7 @@ defmodule Acap.Accounts.UserToken do
   @reset_password_validity_in_days 1
   @confirm_validity_in_days 7
   @change_email_validity_in_days 7
-  @session_validity_in_days 60
+  @session_validity_in_minutes 10
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -54,13 +54,13 @@ defmodule Acap.Accounts.UserToken do
   The query returns the user found by the token, if any.
 
   The token is valid if it matches the value in the database and it has
-  not expired (after @session_validity_in_days).
+  not expired (after @session_validity_in_minutes).
   """
   def verify_session_token_query(token) do
     query =
       from token in by_token_and_context_query(token, "session"),
         join: user in assoc(token, :user),
-        where: token.inserted_at > ago(@session_validity_in_days, "day"),
+        where: token.inserted_at > ago(@session_validity_in_minutes, "minute"),
         select: user
 
     {:ok, query}
