@@ -12,7 +12,6 @@ defmodule AcapWeb.UserSessionController do
     %{"email" => email, "password" => password} = user_params
 
     if user = Accounts.get_user_by_email_and_password(email, password) do
-
       if user.totp_secret do
         conn
         |> put_session(:pending_2fa, user.id)
@@ -30,13 +29,13 @@ defmodule AcapWeb.UserSessionController do
   end
 
   def verify(conn, %{"user" => %{"totp_check" => totp_secret_check}}) do
-
     %{totp_secret: secret} = user = get_session(conn, :pending_2fa) |> Accounts.get_user!()
+
     if NimbleTOTP.valid?(secret |> Base.decode32!(padding: false), totp_secret_check) do
       conn
-        |> delete_session(:pending_2fa)
-        |> put_flash(:info, "Welcome back!")
-        |> UserAuth.log_in_user(user)
+      |> delete_session(:pending_2fa)
+      |> put_flash(:info, "Welcome back!")
+      |> UserAuth.log_in_user(user)
     else
       render(conn, :verify, error_message: "Not valid")
     end

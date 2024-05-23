@@ -30,7 +30,6 @@ defmodule AcapWeb.UserSettingsController do
     qr_code_uri = NimbleTOTP.otpauth_uri("acappdx.org:#{user.email}", secret)
     {:ok, qr_code_uri} = qr_code_uri |> QRCode.create() |> QRCode.render() |> QRCode.to_base64()
 
-
     case Accounts.update_user_totp(user, user_params) do
       {:ok, _applied_user} ->
         conn
@@ -41,7 +40,11 @@ defmodule AcapWeb.UserSettingsController do
         |> redirect(to: ~p"/")
 
       {:error, changeset} ->
-        render(conn, :edit, totp_changeset: changeset, qr_code_uri: qr_code_uri, totp_secret: secret)
+        render(conn, :edit,
+          totp_changeset: changeset,
+          qr_code_uri: qr_code_uri,
+          totp_secret: secret
+        )
     end
   end
 

@@ -151,6 +151,7 @@ defmodule Acap.Timesheets.Timesheet do
   schema "timesheets" do
     field :status, Ecto.Enum, values: [:draft, :submitted, :accepted, :rejected], default: :draft
     field :week_starting, :date
+    field :hours, :float
     belongs_to :user, Acap.Accounts.User
     embeds_many :entries, TimesheetEntry, on_replace: :delete
 
@@ -173,5 +174,31 @@ defmodule Acap.Timesheets.Timesheet do
       message:
         "You already have a timesheet for this date. You can only save one timesheet per work week."
     )
+    |> put_total()
   end
+
+  defp put_total(%Ecto.Changeset{valid?: true} = changeset) do
+    # Extract current entries
+    current_entries = get_field(changeset, :entries, [])
+
+    # Extract changes in entries from changeset
+    changed_entries = get_change(changeset, :entries, [])
+
+    # Calculate current total hours
+    current_total_hours = Enum.reduce(current_entries, 0, fn entry, acc -> acc + entry.hours end)
+
+    # Apply changes to the current total hours
+    new_total_hours = Enum.reduce(changed_entries, current_total_hours, fn
+      %{action: :delete, changes: %{hours: hours}}, acc -> acc - hours
+      %{action: :replace, changes: %{hours: hours}}, acc -> acc + hours
+      %{action: :insert, changes: %{hours: hours}}, acc -> acc + hours
+      _, acc -> acc |> dbg()
+    end)
+
+    # Add the new total hours to the changeset
+    put_change(changeset, :hours, new_total_hours)
+  end
+
+  defp put_total(cs), do: put_change(cs, :hours, 0.0)
+
 end

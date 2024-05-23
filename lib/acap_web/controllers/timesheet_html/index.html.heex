@@ -252,10 +252,15 @@
 </.header>
 
 <.table id="timesheets" rows={@timesheets} row_click={&~p"/timesheets/#{&1}"}>
+  <:col :let={timesheet} label="Total">
+    <%= timesheet.hours || 0 %>
+  </:col>
   <:col :let={timesheet} label="Week starting">
     <.current_week_styling week_starting={timesheet.week_starting} />
   </:col>
-  <:col :let={timesheet} label="Status"><.status status={timesheet.status} /></:col>
+  <:col :let={timesheet} label="Status">
+    <.status status={timesheet.status} />
+  </:col>
   <:col :let={timesheet} :if={@current_user.admin} label="Account">
     <%= timesheet.user.email %>
   </:col>
