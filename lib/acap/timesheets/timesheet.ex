@@ -24,7 +24,6 @@ defmodule Acap.Timesheets.Timesheet.TimesheetEntry.Segment do
       {:ok, start_struct} = Time.from_iso8601(start_time <> ":00")
       {:ok, stop_struct} = Time.from_iso8601(stop_time <> ":00")
 
-      # Compare times
       if Time.compare(start_struct, stop_struct) != :gt do
         changeset
       else
@@ -178,13 +177,10 @@ defmodule Acap.Timesheets.Timesheet do
   end
 
   defp put_total(%Ecto.Changeset{valid?: true} = changeset) do
-    # Extract current entries
     current_entries = get_field(changeset, :entries, [])
 
-    # Extract changes in entries from changeset
     changed_entries = get_change(changeset, :entries, [])
 
-    # Calculate current total hours
     current_total_hours = Enum.reduce(current_entries, 0, fn entry, acc -> acc + entry.hours end)
 
     is_new_record = changeset.data.id == nil
@@ -204,7 +200,6 @@ defmodule Acap.Timesheets.Timesheet do
       end)
     end
 
-    # Add the new total hours to the changeset
     put_change(changeset, :hours, new_total_hours)
   end
 
