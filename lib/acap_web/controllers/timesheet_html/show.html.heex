@@ -9,7 +9,7 @@
       <.status status={@timesheet.status} />
       <div class="mt-4">Submitter: <%= @timesheet.user.email %></div>
       <span class="block text-sm text-zinc-900 font-thin">
-        Updated on: <%= @timesheet.updated_at |> NimbleStrftime.format("%I:%M %P, %a %m/%d/%y") %>
+        Updated on: <%= @timesheet.updated_at |> Acap.DateUtils.convert_utc_to_pst!() |> NimbleStrftime.format("%I:%M %P, %a %m/%d/%y") %>
       </span>
       <span class="block text-sm text-zinc-900 font-thin">
         Created on: <%= @timesheet.inserted_at |> NimbleStrftime.format("%I:%M %P, %a %m/%d/%y") %>

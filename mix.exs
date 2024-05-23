@@ -55,7 +55,8 @@ defmodule Acap.MixProject do
       {:sentry, "~> 10.2.0"},
       {:hackney, "~> 1.8"},
       {:nimble_totp, "~> 1.0"},
-      {:qr_code, "~> 3.0"}
+      {:qr_code, "~> 3.0"},
+      {:tzdata, "~> 1.1"}
     ]
   end
 

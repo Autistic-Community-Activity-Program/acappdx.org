@@ -1,4 +1,8 @@
 defmodule Acap.DateUtils do
+  alias NimbleStrftime
+  alias DateTime, as: DT
+
+
   def all_sundays do
     # Get today's date
     today = Date.utc_today()
@@ -30,4 +34,18 @@ defmodule Acap.DateUtils do
     days_to_add = 7 - day_of_week
     Date.add(first_day, days_to_add)
   end
+
+
+  def convert_utc_to_pst!(utc_datetime) do
+    # Adjust the datetime to PST (UTC-8)
+    case DT.shift_zone(utc_datetime, "America/Los_Angeles") do
+      {:ok, datetime_in_pst} -> datetime_in_pst
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  def format_datetime(datetime, format \\ "%Y-%m-%d %H:%M:%S") do
+    NimbleStrftime.format(datetime, format)
+  end
+
 end
