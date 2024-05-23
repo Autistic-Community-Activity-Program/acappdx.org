@@ -186,23 +186,23 @@ defmodule Acap.Timesheets.Timesheet do
     is_new_record = changeset.data.id == nil
 
     # Adjust calculation based on whether it's a new record or an update
-    new_total_hours = if is_new_record do
-      Enum.reduce(changed_entries, 0.0, fn
-        %{action: :insert, changes: %{hours: hours}}, acc -> acc + hours
-        _, acc -> acc
-      end)
-    else
-      Enum.reduce(changed_entries, current_total_hours, fn
-        %{action: :delete, changes: %{hours: hours}}, acc -> acc - hours
-        %{action: :replace, changes: %{hours: hours}}, acc -> acc + hours
-        %{action: :insert, changes: %{hours: hours}}, acc -> acc + hours
-        _, acc -> acc
-      end)
-    end
+    new_total_hours =
+      if is_new_record do
+        Enum.reduce(changed_entries, 0.0, fn
+          %{action: :insert, changes: %{hours: hours}}, acc -> acc + hours
+          _, acc -> acc
+        end)
+      else
+        Enum.reduce(changed_entries, current_total_hours, fn
+          %{action: :delete, changes: %{hours: hours}}, acc -> acc - hours
+          %{action: :replace, changes: %{hours: hours}}, acc -> acc + hours
+          %{action: :insert, changes: %{hours: hours}}, acc -> acc + hours
+          _, acc -> acc
+        end)
+      end
 
     put_change(changeset, :hours, new_total_hours)
   end
 
   defp put_total(cs), do: put_change(cs, :hours, 0.0)
-
 end
