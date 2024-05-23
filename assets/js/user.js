@@ -19,5 +19,4 @@ document.addEventListener("DOMContentLoaded", () => {
             admin_btn.querySelector('span').classList.remove("translate-x-0");
         }
     })
-
 });

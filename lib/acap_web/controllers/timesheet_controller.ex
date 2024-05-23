@@ -41,10 +41,10 @@ defmodule AcapWeb.TimesheetController do
     all_users = Accounts.list_users()
 
     weeks_starting_totals = Timesheets.group_hours()
-    weeks_starting_totals_accepted = Timesheets.group_accepted_hours()      |> dbg()
-    weeks_starting_totals_draft = Timesheets.group_draft_hours()            |> dbg()
-    weeks_starting_totals_submitted = Timesheets.group_submitted_hours()    |> dbg()
-    weeks_starting_totals_rejected = Timesheets.group_rejected_hours()      |> dbg()
+    weeks_starting_totals_accepted = Timesheets.group_accepted_hours()
+    weeks_starting_totals_draft = Timesheets.group_draft_hours()
+    weeks_starting_totals_submitted = Timesheets.group_submitted_hours()
+    weeks_starting_totals_rejected = Timesheets.group_rejected_hours()
     all_starting_weeks = Acap.DateUtils.all_sundays()
 
     render(conn, :index,

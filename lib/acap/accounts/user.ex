@@ -175,7 +175,9 @@ defmodule Acap.Accounts.User do
   end
 
   def validate_totp(
-        cs = %Ecto.Changeset{changes: %{totp_secret: totp_secret, totp_secret_check: secret_check}},
+        cs = %Ecto.Changeset{
+          changes: %{totp_secret: totp_secret, totp_secret_check: secret_check}
+        },
         _opt
       ) do
     secret = totp_secret |> Base.decode32!(padding: false)
