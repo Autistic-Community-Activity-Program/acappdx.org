@@ -1,5 +1,21 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* This file is for your main application CSS */
+
+.notes{
+  border-top: solid 1px #bbb;
+  padding-top: 5px;
+  h2, h3, h4, h5{
+    font-weight: 900;
+    font-size: xx-large;
+    color: 
+  }
+
+  ul {
+    list-style: revert;
+    margin: revert;
+    padding: revert;
+  }
+}

@@ -56,7 +56,8 @@ defmodule Acap.MixProject do
       {:hackney, "~> 1.8"},
       {:nimble_totp, "~> 1.0"},
       {:qr_code, "~> 3.0"},
-      {:tzdata, "~> 1.1"}
+      {:tzdata, "~> 1.1"},
+      {:earmark, "~> 1.4"}
     ]
   end
 

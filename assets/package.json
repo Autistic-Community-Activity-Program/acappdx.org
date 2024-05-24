@@ -1,9 +1,9 @@
 {
   "scripts": {
     "watch_js": "esbuild js/app.js js/timesheet.js js/timesheet_show.js js/user.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --sourcemap=inline  --watch",
-    "watch_css": "tailwindcss -i css/app.css -o ../priv/static/assets/app.css --watch",
+    "watch_css": "postcss css/app.css -o ../priv/static/assets/app.css --watch",
     "build_js": "esbuild js/app.js js/timesheet.js js/timesheet_show.js js/user.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*  --minify",
-    "build_css": "tailwindcss -i css/app.css -o ../priv/static/assets/app.css  --minify"
+    "build_css": "postcss css/app.css -o ../priv/static/assets/app.css --minify"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
@@ -11,11 +11,14 @@
     "autoprefixer": "^10.4.19",
     "esbuild": "0.20.2",
     "postcss": "^8.4.38",
+    "postcss-nested": "^6.0.1",
     "tailwindcss": "^3.4.3"
   },
   "dependencies": {
     "date-fns": "^3.6.0",
     "phoenix_html": "^4.1.1",
-    "plotly.js-dist-min": "^2.32.0"
+    "plotly.js-dist-min": "^2.32.0",
+    "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.1.0"
   }
 }
