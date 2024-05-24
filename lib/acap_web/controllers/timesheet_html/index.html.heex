@@ -198,35 +198,44 @@
           </select>
         </div>
       </div>
+      
+      
       <div class="mt-5 sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
         <button
           :if={
             (@filter_date && @filter_date != "") || (@filter_status && @filter_status != "") ||
               (@filter_user && @filter_user != "")
           }
-          onclick="removeQueryParam(event)"
+          id="filter_rows"
           class="inline-flex items-center rounded-md bg-pink-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-500 mr-2"
         >
           Clear filter <.icon name="hero-no-symbol" class="ml-2 h-5 w-5" />
         </button>
-        <script>
-          function removeQueryParam(event) {
-            // Prevent form submission (not strictly necessary here but good practice when mixing types)
-            event.preventDefault();
-            document.getElementById('week_starting').value = ""
-            document.getElementById('status').value = ""
-            document.getElementById('filter_user').value = ""
-
-
-            document.getElementById('filters').submit();
-          }
-        </script>
+        
         <button
           type="submit"
           class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
         >
           Filter <.icon name="hero-funnel" class="ml-2 h-5 w-5" />
         </button>
+        
+        <script :if={
+            (@filter_date && @filter_date != "") || (@filter_status && @filter_status != "") ||
+              (@filter_user && @filter_user != "")
+          }>
+          const filter_btn = document.getElementById('filter_rows');
+          filter_btn.addEventListener("click", (event) => {
+            // Prevent form submission (not strictly necessary here but good practice when mixing types)
+            event.preventDefault();
+            document.getElementById('week_starting').value = "";
+            document.getElementById('status').value = "";
+            if(document.getElementById('filter_user')){
+              document.getElementById('filter_user').value = "";
+            }
+            document.getElementById('filters').submit();
+            
+          });
+      </script>
       </div>
     </div>
   </form>
