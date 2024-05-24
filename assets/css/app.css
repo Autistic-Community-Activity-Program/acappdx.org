@@ -9,13 +9,27 @@
   padding-top: 5px;
   h2, h3, h4, h5{
     font-weight: 900;
-    font-size: xx-large;
-    color: 
   }
-
+  h2{
+    font-size: xx-large;
+  }
+  h3{
+    font-size: x-large;
+  }
+  h4{
+    font-size: large;
+  }
   ul {
     list-style: revert;
     margin: revert;
     padding: revert;
   }
+  a {
+    text-decoration: revert;
+    color: revert;
+  }
+  blockquote {
+    @apply border-l-4 border-blue-500 pl-4 italic text-gray-700 bg-gray-100 p-4 rounded-md;
+  }
+  
 }
