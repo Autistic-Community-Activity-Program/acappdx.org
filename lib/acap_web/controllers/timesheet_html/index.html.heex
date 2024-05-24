@@ -110,6 +110,7 @@
 </script>
 <hr />
 <div class=" my-10 ">
+  <h3 class="text-lg font-semibold leading-8 text-zinc-800 mb-4">Filter rows</h3>
   <form id="filters" action={~p"/timesheets"}>
     <h3
       :if={
@@ -214,6 +215,8 @@
             event.preventDefault();
             document.getElementById('week_starting').value = ""
             document.getElementById('status').value = ""
+            document.getElementById('filter_user').value = ""
+
 
             document.getElementById('filters').submit();
           }
