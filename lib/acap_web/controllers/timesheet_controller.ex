@@ -12,7 +12,7 @@ defmodule AcapWeb.TimesheetController do
 
     timesheets = Timesheets.list_timesheets(current_user, filter_date, filter_status, filter_user)
 
-    case Acap.Exporter.export(timesheets, [:id, :week_starting, :status, :entries, :user]) do
+    case Acap.Exporter.export(timesheets, [:id, :week_starting, :status, :entries, :user, :hours]) do
       {:ok, csv_data} ->
         conn
         |> put_resp_content_type("text/csv")

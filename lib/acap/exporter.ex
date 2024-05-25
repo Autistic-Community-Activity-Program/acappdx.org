@@ -32,6 +32,10 @@ defmodule Acap.Exporter do
 
   defp flatten_record_to_json(record, fields) do
     Enum.map(fields, fn
+      :week_starting ->
+        record
+        |> Map.get(:week_starting)
+        |> NimbleStrftime.format("%m/%d/%y")
       :user ->
         record
         |> Map.get(:user)
