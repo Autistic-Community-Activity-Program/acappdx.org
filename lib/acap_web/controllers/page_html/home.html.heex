@@ -1,16 +1,168 @@
-<div class="bg-gradient-to-b from-[#e3e8e4] to-[#fffde9]">
-  <AcapWeb.Layouts.header_nav current_user={@current_user} />
-
-  <main class="px-4 sm:px-6 lg:px-8 pt-40 ">
-    <div class="mx-auto max-w-7xl">
-      <.flash_group flash={@flash} />
-      <h1 class="text-center font-black text-xl sm:text-3xl mb-4">Welcome to ACAP admin site!</h1>
-      <img
-        class="mx-auto w-full sm:w-1/2 rounded media shadow-lg mb-20"
-        src={~p"/images/home.webp"}
-      />
+<div class="relative isolate overflow-hidden h-screen">
+  <img
+    src="/images/History_04.jpg"
+    class="absolute inset-0 -z-10 object-top object-cover opacity-[.1] h-screen w-full"
+  />
+  <div class="mx-auto flex flex-col h-full items-center justify-center">
+    <div class="mb-8 sm:flex sm:justify-center">
+      <div class="relative rounded-full px-5 py-3 text-sm leading-6ring-1 ring-gray-900/10 hover:ring-gray-900/20 bg-base-100 text-base-content">
+        We are hiring!
+        <a href="#" class="font-semibold text-primary">
+          <span class="absolute inset-0" aria-hidden="true"></span>Join the team
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
     </div>
-  </main>
 
-  <AcapWeb.Layouts.footer />
+    <h1 class="text-6xl font-black text-base-content tracking-tight mb-4 text-center leading-[4rem]">
+      Autistic Community Activity Programs
+    </h1>
+    <p class="font-bold text-2xl">Education through recreation</p>
+
+    <div class="mb-8 sm:flex sm:justify-center mt-8 font-black text-lg">
+      <div class="relative rounded-full px-5 py-3 leading-6 ring-1 ring-primary text-primary">
+        Established: 1987 🌈
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class=" py-16 sm:py-24 lg:py-32">
+  <div class="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 lg:grid-cols-12 lg:gap-8 lg:px-8">
+    <div class="max-w-xl text-3xl font-bold tracking-tightsm:text-4xl lg:col-span-7">
+      <h2 class="inline sm:block lg:inline xl:block">Want news and updates?</h2>
+      <p class="inline sm:block lg:inline xl:block">Sign up for our newsletter.</p>
+    </div>
+    <form
+      class="w-full max-w-md lg:col-span-5 lg:pt-2"
+      action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSfp97B0p77015KuUVbmlap1ka6UQQGcr5-hl1Z7VvRyFaR2cg/formResponse"
+      method="POST"
+      id="m_-3992168288501878888ss-form"
+      target="_blank"
+    >
+      <div class="flex gap-x-4">
+        <label for="email-address" class="sr-only">Email address</label>
+        <input
+          id="email-address"
+          name="entry.1241101104"
+          type="email"
+          autocomplete="email"
+          required
+          class="input min-w-0 flex-auto rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-primary appearance-none"
+          placeholder="Enter your email"
+        />
+        <button
+          type="submit"
+          class="flex-none rounded-md btn btn-primary px-3.5 py-2.5 text-sm font-semibold  shadow-sm"
+        >
+          Subscribe
+        </button>
+      </div>
+      <p class="mt-4 text-sm leading-6">
+        We care about your data. Read our <a href="#" class="font-semibold text-primary">privacy&nbsp;policy</a>.
+      </p>
+    </form>
+  </div>
+</div>
+
+<div class="mx-auto max-w-7xl px-8 sm:px-0 py-12 text-lg leading-8">
+  <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+    <article class="flex flex-col items-start">
+      <img
+        src="/images/home-summer.jpg"
+        alt=""
+        class=" w-full rounded-2xl bg-gray-100 object-cover mb-2 aspect-square"
+      />
+      <h3 class="my-4 text-2xl font-black mx-auto">
+        <a class="hover:text-primary" href="/posts/2023/04-02-prank2.html">
+          Summer Camp
+        </a>
+      </h3>
+      <p class="mt-5 ">
+        The Autistic Community Activity Program (ACAP) has served people with autism spectrum disorder (ASD) since 1987. Our eight week summer camp program provides structure in a vareity of onsite and community settings while teaching vital and much neglected skills.
+      </p>
+      <p class="mt-6">
+        <a href="/about/summer.html" class="text-sm font-semibold leading-6 text-primary">
+          Learn more <span aria-hidden="true">→</span>
+        </a>
+      </p>
+    </article>
+    <article class="flex flex-col items-start">
+      <img
+        src="/images/home-projects.jpg"
+        alt=""
+        class="w-full rounded-2xl bg-gray-100 object-cover mb-2 aspect-square"
+      />
+      <h3 class="my-4 text-2xl font-black mx-auto">
+        <a class="hover:text-primary" href="/posts/2023/04-02-prank2.html">
+          PROJECTS Program
+        </a>
+      </h3>
+      <p class="mt-5">
+        The year-round PROJECTS Program grew from ACAP's previous, summer-camp-only, Mentor Program. Collaborating with our partner organization, Community Workshop, young adults research and explore activities and ideas they are most passionate about. With one-to-one guidance, they develop long-term projects as well as participate in community activities, all focused on continued development of creative, social, and professional skills.
+      </p>
+      <p class="mt-6">
+        <a href="/about/projects.html" class="text-sm font-semibold leading-6 text-primary">
+          Learn more <span aria-hidden="true">→</span>
+        </a>
+      </p>
+    </article>
+    <article class="flex flex-col items-start">
+      <img
+        src="/images/History_04.jpg"
+        alt=""
+        class="w-full rounded-2xl bg-gray-100 object-cover mb-2 aspect-square"
+      />
+      <h3 class="my-4 text-2xl font-black mx-auto">
+        <a class="hover:text-primary" href="/posts/2023/04-02-prank2.html">
+          ACAP History
+        </a>
+      </h3>
+      <p class="mt-5 ">
+        The Autistic Community Activity Program began in 1987 as a grassroots effort by parents and supportive professionals seeking to fill an unmet need. They were searching for a summer community activities program and day camp for their children with autism, but found none.
+      </p>
+      <p class="mt-6">
+        <a href="/about/history.html" class="text-sm font-semibold leading-6 text-primary">
+          Learn more <span aria-hidden="true">→</span>
+        </a>
+      </p>
+    </article>
+  </div>
+</div>
+<!-- Events section -->
+<div class="text-lg leading-8 px-4 md:px-0">
+  <div class="mx-auto max-w-7xl py-12">
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">ACAP Stories</h2>
+    </div>
+    <p class="my-8">
+      <em>
+        "Overall, I believe ACAP is the perfect place where kids on the spectrum are accepted for exactly who
+        they are and where they are, while at the same time, being gently pushed past their comfort zones to
+        experience the next steps towards the growth they need to become more self-sufficient."
+      </em>
+    </p>
+
+    <hr />
+
+    <p class="my-8">
+      <em>
+        "[Our child] had a wonderful summer, thanks to your program. You kept him plenty busy, out of the
+        house,
+        away from his games and the computer and on his feet, which he so desperately needs."
+      </em>
+    </p>
+
+    <hr />
+
+    <p class="my-8">
+      <em>
+        "We would especially like to compliment your staff on the excellent support they provide for their
+        campers with autism. The daily visual schedules, their ability to adapt and work with our daughter's
+        communication system, and the staff's overall enthusiasm for the campers and each other helped our
+        daughter participate to her fullest potential. She is now visibly excited whenever she sees a Tri-Met bus
+        because of all the fun places she got to go with your program this summer."
+      </em>
+    </p>
+  </div>
 </div>

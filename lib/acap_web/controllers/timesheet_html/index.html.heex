@@ -1,3 +1,4 @@
+<div class="mx-auto max-w-7xl py-40">
 <dl
   :if={@current_user.admin}
   class="mb-12 grid grid-cols-1 gap-0.5 overflow-hidden shadow rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4"
@@ -198,8 +199,7 @@
           </select>
         </div>
       </div>
-      
-      
+
       <div class="mt-5 sm:ml-6 sm:mt-0 sm:flex sm:flex-shrink-0 sm:items-center">
         <button
           :if={
@@ -211,18 +211,20 @@
         >
           Clear filter <.icon name="hero-no-symbol" class="ml-2 h-5 w-5" />
         </button>
-        
+
         <button
           type="submit"
           class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
         >
           Filter <.icon name="hero-funnel" class="ml-2 h-5 w-5" />
         </button>
-        
-        <script :if={
+
+        <script
+          :if={
             (@filter_date && @filter_date != "") || (@filter_status && @filter_status != "") ||
               (@filter_user && @filter_user != "")
-          }>
+          }
+        >
           const filter_btn = document.getElementById('filter_rows');
           filter_btn.addEventListener("click", (event) => {
             // Prevent form submission (not strictly necessary here but good practice when mixing types)
@@ -235,7 +237,7 @@
             document.getElementById('filters').submit();
             
           });
-      </script>
+        </script>
       </div>
     </div>
   </form>
@@ -322,3 +324,4 @@
     </.link>
   </:action>
 </.table>
+</div>

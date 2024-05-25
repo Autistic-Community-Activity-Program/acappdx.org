@@ -14,14 +14,32 @@ defmodule AcapWeb.Router do
     plug :fetch_current_user
   end
 
+  pipeline :admin_layout do
+    plug :put_root_layout, html: {AcapWeb.Layouts, :admin}
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
 
   scope "/", AcapWeb do
     pipe_through :browser
-
     get "/", PageController, :home
+    get "/about", PageController, :about
+    get "/about/history", PageController, :history
+    get "/about/staff", PageController, :staff
+    get "/programs", PageController, :programs
+    get "/programs/summer-camp", PageController, :summer
+    get "/programs/projects", PageController, :projects
+    get "/employment", PageController, :employment
+    get "/employment/handbook", PageController, :handbook
+    get "/support/donating", PageController, :donating
+    get "/support/fundraising", PageController, :fundraising
+    get "/support/volunteering", PageController, :volunteering
+    get "/contact", PageController, :contact
+    get "/terms", PageController, :terms
+    get "/privacy", PageController, :privacy
+
   end
 
   # Other scopes may use custom stacks.
@@ -60,12 +78,13 @@ defmodule AcapWeb.Router do
     put "/users/reset_password/:token", UserResetPasswordController, :update
   end
 
-  scope "/", AcapWeb do
-    pipe_through [:browser, :require_authenticated_admin]
-    live_dashboard "/dashboard", metrics: AcapWeb.Telemetry
+  scope "/admin", AcapWeb do
+    pipe_through [:browser, :require_authenticated_admin, :admin_layout]
 
+    live_dashboard "/dashboard", metrics: AcapWeb.Telemetry
     post "/timesheets/export", TimesheetController, :export
     resources "/accounts", AccountsController
+    resources "/timesheets", TimesheetController
   end
 
   scope "/", AcapWeb do
@@ -75,6 +94,7 @@ defmodule AcapWeb.Router do
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
     resources "/timesheets", TimesheetController
+
   end
 
   scope "/", AcapWeb do

@@ -1,0 +1,197 @@
+<header
+  id="main_nav"
+  class="fixed inset-x-0 top-0 z-50 bg-base-100 ease-in-out transition-all duration-300"
+>
+  <nav class="flex items-center justify-between p-4 lg:px-8" aria-label="Global">
+    <div class="flex lg:flex-1">
+      <.link
+        href={~p"/"}
+        class="text-[0.8125rem] leading-6 font-semibold"
+      >
+        <div class="flex justify-center content-center justify-items-center ml-2">
+          <div class="flex items-center justify-center font-black text-lg">
+            <!-- Grid container -->
+            <div class="grid-fixed-size grid grid-cols-2 gap-0 text-white">
+              <!-- Grid cells -->
+              <div class="flex items-center justify-center bg-[#efc949] h-[20px] w-[20px]">A</div>
+              <div class="flex items-center justify-center bg-[#af2a20] h-[20px] w-[20px]">C</div>
+              <div class="flex items-center justify-center bg-[#4667f4] h-[20px] w-[20px]">A</div>
+              <div class="flex items-center justify-center bg-[#862492] h-[20px] w-[20px]">P</div>
+            </div>
+          </div>
+          <span class=" hidden sm:block content-center ml-2 font-black text-sm md:text-base">
+            Autistic Community<br /> Activity Program
+          </span>
+        </div>
+      </.link>
+    </div>
+    <div class="flex lg:hidden lg:gap-x-1 font-black text-center text-2xl">
+      ACAP
+    </div>
+    <div class="flex lg:hidden">
+      <button
+        id="open_mobile_nav"
+        type="button"
+        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5"
+      >
+        <span class="sr-only">Open main menu</span>
+        <svg
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+          />
+        </svg>
+      </button>
+    </div>
+    <div class="hidden lg:flex lg:gap-x-12">
+      <a
+        :if={@current_user != nil && @current_user.admin}
+        href={~p"/admin/timesheets"}
+        class="text-sm font-semibold leading-6"
+      >
+        Timesheets
+      </a>
+      <a href={~p"/admin/accounts"} class="text-sm font-semibold leading-6">
+        Accounts
+      </a>
+      
+    </div>
+
+    <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+      <%= if @current_user do %>
+        <.link
+          href={~p"/users/settings"}
+          class="text-sm font-semibold leading-6  mr-6"
+        >
+          <span class="inline-flex items-center rounded-md bg-purple-400/10 px-4 py-2 text-xs text-purple-400 ring-1 ring-inset ring-purple-400/30 mr-2 font-black ">
+            <%= @current_user.email %>
+          </span>
+        </.link>
+
+        <.link
+          href={~p"/users/log_out"}
+          method="delete"
+          class="text-sm font-semibold leading-6  mr-6"
+        >
+          Log out
+        </.link>
+      <% else %>
+        <.link
+          href={~p"/users/register"}
+          class="text-sm font-semibold leading-6  mr-6"
+        >
+          Register
+        </.link>
+
+        <.link href={~p"/users/log_in"} class="text-sm font-semibold leading-6 ">
+          Log in <span aria-hidden="true">&rarr;</span>
+        </.link>
+      <% end %>
+      <.theme_changer />
+    </div>
+  </nav>
+</header>
+<!-- mobile menu -->
+<div
+  id="mobile_menu"
+  class="fixed z-50 inset-x-0 top-0 h-60 transition-all duration-300 opacity-0 invisible"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="fixed inset-0 z-50"></div>
+  <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-zinc-900/10">
+    <div class="flex items-center justify-between">
+      <.link
+        href={~p"/"}
+        class="text-[0.8125rem] leading-6  font-semibold hover:text-zinc-700"
+      >
+        <div class="flex justify-center content-center justify-items-center ml-2">
+          <div class="flex items-center justify-center font-black text-lg">
+            <!-- Grid container -->
+            <div class="grid-fixed-size grid grid-cols-2 gap-0 text-white">
+              <!-- Grid cells -->
+              <div class="flex items-center justify-center bg-[#efc949] h-[20px] w-[20px]">A</div>
+              <div class="flex items-center justify-center bg-[#af2a20] h-[20px] w-[20px]">C</div>
+              <div class="flex items-center justify-center bg-[#4667f4] h-[20px] w-[20px]">A</div>
+              <div class="flex items-center justify-center bg-[#862492] h-[20px] w-[20px]">P</div>
+            </div>
+          </div>
+        </div>
+      </.link>
+      <button id="close_mobile_nav" type="button" class="-m-2.5 rounded-md p-2.5 text-zinc-700">
+        <span class="sr-only">Close menu</span>
+        <svg
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="mt-6 flow-root">
+      <div class="-my-6 divide-y divide-zinc-500/10">
+        <div class="space-y-2 py-6">
+          <a
+            href={~p"/timesheets"}
+            class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  hover:bg-zinc-50"
+          >
+            Timesheets
+          </a>
+
+          <a
+            :if={@current_user != nil && @current_user.admin}
+            href={~p"/accounts"}
+            class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  hover:bg-zinc-50"
+          >
+            Accounts
+          </a>
+        </div>
+        <div class="py-6">
+          <%= if @current_user do %>
+            <.link href={~p"/users/settings"} class="block mb-2">
+              <span class="inline-flex items-center rounded-md bg-purple-400/10 px-4 py-2 text-xs text-purple-400 ring-1 ring-inset ring-purple-400/30 mr-2 font-black ">
+                <%= @current_user.email %>
+              </span>
+            </.link>
+
+            <.link
+              href={~p"/users/log_out"}
+              method="delete"
+              class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7  hover:bg-zinc-200"
+            >
+              Log out
+            </.link>
+          <% else %>
+            <.link
+              href={~p"/users/register"}
+              class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7  hover:bg-zinc-200"
+            >
+              Register
+            </.link>
+
+            <.link
+              href={~p"/users/log_in"}
+              class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7  hover:bg-zinc-200"
+            >
+              Log in
+            </.link>
+
+          <% end %>
+          <.theme_changer />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

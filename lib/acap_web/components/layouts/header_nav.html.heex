@@ -1,12 +1,12 @@
 <header
   id="main_nav"
-  class="fixed inset-x-0 top-0 z-50 bg-zinc-100/90 ease-in-out transition-all duration-300"
+  class="fixed inset-x-0 top-0 z-50 bg-base-100 ease-in-out transition-all duration-300"
 >
   <nav class="flex items-center justify-between p-4 lg:px-8" aria-label="Global">
     <div class="flex lg:flex-1">
       <.link
         href={~p"/"}
-        class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        class="text-[0.8125rem] leading-6 font-semibold"
       >
         <div class="flex justify-center content-center justify-items-center ml-2">
           <div class="flex items-center justify-center font-black text-lg">
@@ -19,20 +19,20 @@
               <div class="flex items-center justify-center bg-[#862492] h-[20px] w-[20px]">P</div>
             </div>
           </div>
-          <span class="hidden sm:block content-center ml-2 font-black text-sm md:text-base">
+          <span class=" hidden sm:block content-center ml-2 font-black text-sm md:text-base">
             Autistic Community<br /> Activity Program
           </span>
         </div>
       </.link>
     </div>
-    <div class="flex lg:hidden lg:gap-x-1 text-zinc-900 font-black text-center text-2xl">
+    <div class="flex lg:hidden lg:gap-x-1 font-black text-center text-2xl">
       ACAP
     </div>
     <div class="flex lg:hidden">
       <button
         id="open_mobile_nav"
         type="button"
-        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-zinc-900"
+        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5"
       >
         <span class="sr-only">Open main menu</span>
         <svg
@@ -52,15 +52,32 @@
       </button>
     </div>
     <div class="hidden lg:flex lg:gap-x-12">
-      <a href={~p"/timesheets"} class="text-sm font-semibold leading-6 text-zinc-900">
-        Timesheets
+      <a href={~p"/about"} class="text-sm font-semibold leading-6">
+        About
       </a>
       <a
-        :if={@current_user != nil && @current_user.admin}
-        href={~p"/accounts"}
-        class="text-sm font-semibold leading-6 text-zinc-900"
+        href={~p"/timesheets"}
+        class="text-sm font-semibold leading-6"
       >
-        Accounts
+        Programs
+      </a>
+      <a
+        href={~p"/timesheets"}
+        class="text-sm font-semibold leading-6"
+      >
+        Employment
+      </a>
+       <a
+        href={~p"/timesheets"}
+        class="text-sm font-semibold leading-6"
+      >
+        Support
+      </a>
+       <a
+        href={~p"/timesheets"}
+        class="text-sm font-semibold leading-6"
+      >
+        Events
       </a>
     </div>
 
@@ -68,7 +85,7 @@
       <%= if @current_user do %>
         <.link
           href={~p"/users/settings"}
-          class="text-sm font-semibold leading-6 text-zinc-900 mr-6"
+          class="text-sm font-semibold leading-6  mr-6"
         >
           <span class="inline-flex items-center rounded-md bg-purple-400/10 px-4 py-2 text-xs text-purple-400 ring-1 ring-inset ring-purple-400/30 mr-2 font-black ">
             <%= @current_user.email %>
@@ -78,22 +95,23 @@
         <.link
           href={~p"/users/log_out"}
           method="delete"
-          class="text-sm font-semibold leading-6 text-zinc-900 mr-6"
+          class="text-sm font-semibold leading-6  mr-6"
         >
           Log out
         </.link>
       <% else %>
         <.link
           href={~p"/users/register"}
-          class="text-sm font-semibold leading-6 text-zinc-900 mr-6"
+          class="text-sm font-semibold leading-6  mr-6"
         >
           Register
         </.link>
 
-        <.link href={~p"/users/log_in"} class="text-sm font-semibold leading-6 text-zinc-900">
+        <.link href={~p"/users/log_in"} class="text-sm font-semibold leading-6 ">
           Log in <span aria-hidden="true">&rarr;</span>
         </.link>
       <% end %>
+      <.theme_changer />
     </div>
   </nav>
 </header>
@@ -105,11 +123,11 @@
   aria-modal="true"
 >
   <div class="fixed inset-0 z-50"></div>
-  <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-zinc-900/10">
+  <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-zinc-900/10">
     <div class="flex items-center justify-between">
       <.link
         href={~p"/"}
-        class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+        class="text-[0.8125rem] leading-6  font-semibold hover:text-zinc-700"
       >
         <div class="flex justify-center content-center justify-items-center ml-2">
           <div class="flex items-center justify-center font-black text-lg">
@@ -143,7 +161,7 @@
         <div class="space-y-2 py-6">
           <a
             href={~p"/timesheets"}
-            class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-zinc-900 hover:bg-zinc-50"
+            class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  hover:bg-zinc-50"
           >
             Timesheets
           </a>
@@ -151,7 +169,7 @@
           <a
             :if={@current_user != nil && @current_user.admin}
             href={~p"/accounts"}
-            class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-zinc-900 hover:bg-zinc-50"
+            class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7  hover:bg-zinc-50"
           >
             Accounts
           </a>
@@ -167,25 +185,27 @@
             <.link
               href={~p"/users/log_out"}
               method="delete"
-              class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-zinc-900 hover:bg-zinc-200"
+              class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7  hover:bg-zinc-200"
             >
               Log out
             </.link>
           <% else %>
             <.link
               href={~p"/users/register"}
-              class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-zinc-900 hover:bg-zinc-200"
+              class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7  hover:bg-zinc-200"
             >
               Register
             </.link>
 
             <.link
               href={~p"/users/log_in"}
-              class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-zinc-900 hover:bg-zinc-200"
+              class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7  hover:bg-zinc-200"
             >
               Log in
             </.link>
+
           <% end %>
+          <.theme_changer />
         </div>
       </div>
     </div>

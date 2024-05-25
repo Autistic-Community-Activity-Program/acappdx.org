@@ -1,3 +1,4 @@
+<div class="mx-auto max-w-7xl py-40">
 <.header>
   Edit User <%= @user.id %>
   <:subtitle>Use this form to manage user records in your database.</:subtitle>
@@ -6,3 +7,4 @@
 <.user_form changeset={@changeset} action={~p"/accounts/#{@user}"} admin={@current_user.admin} />
 
 <.back navigate={~p"/accounts"}>Back to users</.back>
+</div>

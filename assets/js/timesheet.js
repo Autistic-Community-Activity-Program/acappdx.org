@@ -54,21 +54,21 @@ function new_segment_template(entry_index, segment_index) {
     <input type="hidden" name="timesheet[entries][${entry_index}][segments_sort][]" value="${segment_index}">
     <div phx-feedback-for="timesheet[entries][${entry_index}][segments][${segment_index}][start]">
         <label
-        for="timesheet_entries_${entry_index}_segments_${segment_index}_start" class="block text-sm font-semibold leading-6 text-zinc-800">
+        for="timesheet_entries_${entry_index}_segments_${segment_index}_start" class="block text-sm font-semibold leading-6 ">
         Start:
         </label>
         <input type="time" name="timesheet[entries][${entry_index}][segments][${segment_index}][start]" id="timesheet_entries_${entry_index}_segments_${segment_index}_start"
-        class="start_time mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 border-zinc-300 focus:border-zinc-400"
+        class="start_time mt-2 block w-full  focus:ring-0 sm:text-sm sm:leading-6 phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 border-zinc-300 focus:border-zinc-400"
         placeholder="00:00 AM|PM">
     </div>
     
     <div>
         <label
-        for="timesheet_entries_${entry_index}_segments_${segment_index}_stop" class="block text-sm font-semibold leading-6 text-zinc-800">
+        for="timesheet_entries_${entry_index}_segments_${segment_index}_stop" class="block text-sm font-semibold leading-6 ">
         Stop:
         </label>
         <input type="time" name="timesheet[entries][${entry_index}][segments][${segment_index}][stop]" id="timesheet_entries_${entry_index}_segments_${segment_index}_stop"
-        class="stop_time mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 border-zinc-300 focus:border-zinc-400"
+        class="stop_time mt-2 block w-full  focus:ring-0 sm:text-sm sm:leading-6 phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 border-zinc-300 focus:border-zinc-400"
         placeholder="00:00 AM|PM">
     </div>
     <label class="cursor-pointer p-2 bg-blue-600 text-white mt-6 block w-20 text-center rounded-md shadow">

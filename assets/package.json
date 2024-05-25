@@ -9,6 +9,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.13",
     "autoprefixer": "^10.4.19",
+    "daisyui": "^4.11.1",
     "esbuild": "0.20.2",
     "postcss": "^8.4.38",
     "postcss-nested": "^6.0.1",
@@ -19,6 +20,7 @@
     "phoenix_html": "^4.1.1",
     "plotly.js-dist-min": "^2.32.0",
     "postcss-cli": "^11.0.0",
-    "postcss-import": "^16.1.0"
+    "postcss-import": "^16.1.0",
+    "theme-change": "^2.5.0"
   }
 }

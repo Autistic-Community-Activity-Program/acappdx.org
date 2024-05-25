@@ -1,4 +1,4 @@
-<div class="mx-auto max-w-sm">
+<div class="mx-auto max-w-sm py-40">
   <.header class="text-center">Confirm account</.header>
 
   <.simple_form for={@conn.params["user"]} as={:user} action={~p"/users/confirm/#{@token}"}>

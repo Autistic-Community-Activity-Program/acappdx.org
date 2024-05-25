@@ -21,7 +21,17 @@
     >
     </script>
   </head>
+  <script is:inline>
+    // ☝️ This script prevent the FART effect.
+    if (localStorage.getItem("theme") === null) {
+      document.documentElement.setAttribute("data-theme", "light");
+    } else
+    document.documentElement.setAttribute("data-theme", localStorage.getItem("theme"));
+  </script>
+
   <body class="antialiased">
+    <.header_nav current_user={@current_user} />
     <%= @inner_content %>
+    <.footer />
   </body>
 </html>

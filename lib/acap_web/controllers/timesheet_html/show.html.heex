@@ -1,3 +1,5 @@
+<div class="mx-auto max-w-7xl py-40">
+
 <.header>
   Timesheet:
   <span class="text-purple-600 font-black">
@@ -8,12 +10,12 @@
     <div class="my-8">
       <.status status={@timesheet.status} />
       <div class="mt-4">Submitter: <%= @timesheet.user.email %></div>
-      <span class="block text-sm text-zinc-900 font-thin">
+      <span class="block text-sm  font-thin">
         Updated on: <%= @timesheet.updated_at
         |> Acap.DateUtils.convert_utc_to_pst!()
         |> NimbleStrftime.format("%I:%M %P, %a %m/%d/%y") %>
       </span>
-      <span class="block text-sm text-zinc-900 font-thin">
+      <span class="block text-sm  font-thin">
         Created on: <%= @timesheet.inserted_at |> NimbleStrftime.format("%I:%M %P, %a %m/%d/%y") %>
       </span>
     </div>
@@ -39,7 +41,7 @@
     <div class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
       <span id=""><%= day |> day_of_the_week_formated() %></span>
       <div>
-        <span class="block text-sm font-semibold leading-6 text-zinc-800">
+        <span class="block text-sm font-semibold leading-6 ">
           Hours: <%= hours %>
         </span>
         <div :if={notes} class="my-6">
@@ -86,3 +88,4 @@
     }
   });
 </script>
+</div>

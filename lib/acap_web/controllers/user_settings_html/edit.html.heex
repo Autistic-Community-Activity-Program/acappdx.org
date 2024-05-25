@@ -1,9 +1,10 @@
-<.header class="text-center">
-  Account Settings
-  <:subtitle>Manage your account email address and password settings</:subtitle>
-</.header>
+<div class="space-y-12 divide-y py-40">
 
-<div class="space-y-12 divide-y">
+  <.header class="text-center">
+    Account Settings
+    <:subtitle>Manage your account email address and password settings</:subtitle>
+  </.header>
+  
   <div :if={!@current_user.totp_secret}>
     <h2 class="font-black">(2FA)</h2>
     <span>Please enable Two-factor authentication</span>
