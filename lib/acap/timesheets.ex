@@ -195,7 +195,7 @@ defmodule Acap.Timesheets do
     Timesheet.changeset(timesheet, attrs)
   end
 
-  def total_pending_timesheets() do
+  def total_pending_timesheets(%{admin: true}) do
     q =
       from t in Timesheet,
         select: count(t.id),
@@ -205,7 +205,17 @@ defmodule Acap.Timesheets do
     total || 0
   end
 
-  def total_accepted_hours_for_current_week() do
+  def total_pending_timesheets(%{id: user_id}) do
+    q =
+      from t in Timesheet,
+        select: count(t.id),
+        where: t.status == :submitted,
+        where: t.user_id == ^user_id
+    [total] = Repo.all(q)
+    total || 0
+  end
+
+  def total_accepted_hours_for_current_week(%{admin: true}) do
     # Get today's date
     start_of_week = Date.beginning_of_week(Date.utc_today(), :sunday)
 
@@ -226,7 +236,31 @@ defmodule Acap.Timesheets do
     total || 0
   end
 
-  def total_pending_hours() do
+  def total_accepted_hours_for_current_week(%{id: user_id}) do
+    {:ok, user_id_binary} = Ecto.UUID.dump(user_id)
+
+    # Get today's date
+    start_of_week = Date.beginning_of_week(Date.utc_today(), :sunday)
+
+    # SQL query that filters timesheets starting from the current Sunday
+    sql = """
+    SELECT SUM((elem->>'hours')::float) AS total_hours
+    FROM timesheets,
+    LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+    AND timesheets.status = 'accepted'
+    AND timesheets.week_starting = $1
+    AND timesheets.user_id = $2::uuid
+    """
+
+    # Execute the query with the current Sunday as a parameter
+    {:ok, %Postgrex.Result{rows: [[total]]}} = Repo.query(sql, [start_of_week, user_id_binary])
+
+    # Return the total hours or 0 if nil
+    total || 0
+  end
+
+  def total_pending_hours(%{admin: true}) do
     sql = """
     SELECT SUM((elem->>'hours')::float) AS total_hours
     FROM timesheets,
@@ -240,7 +274,25 @@ defmodule Acap.Timesheets do
     total || 0
   end
 
-  def total_accepted_hours() do
+
+  def total_pending_hours(%{id: user_id}) do
+    {:ok, user_id_binary} = Ecto.UUID.dump(user_id)
+
+    sql = """
+    SELECT SUM((elem->>'hours')::float) AS total_hours
+    FROM timesheets,
+    LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+    AND timesheets.status = 'submitted'
+    AND timesheets.user_id = $1::uuid
+    """
+
+    {:ok, %Postgrex.Result{rows: [[total]]}} = Repo.query(sql, [user_id_binary])
+
+    total || 0
+  end
+
+  def total_accepted_hours(%{admin: true}) do
     sql = """
     SELECT SUM((elem->>'hours')::float) AS total_hours
     FROM timesheets,
@@ -250,6 +302,23 @@ defmodule Acap.Timesheets do
     """
 
     {:ok, %Postgrex.Result{rows: [[total]]}} = Repo.query(sql)
+
+    total || 0
+  end
+
+  def total_accepted_hours(%{id: user_id}) do
+    {:ok, user_id_binary} = Ecto.UUID.dump(user_id)
+
+    sql = """
+    SELECT SUM((elem->>'hours')::float) AS total_hours
+    FROM timesheets,
+    LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+    AND timesheets.status = 'accepted'
+    AND timesheets.user_id = $1::uuid
+    """
+
+    {:ok, %Postgrex.Result{rows: [[total]]}} = Repo.query(sql, [user_id_binary])
 
     total || 0
   end
@@ -271,7 +340,8 @@ defmodule Acap.Timesheets do
     weeks_starting_totals || []
   end
 
-  def group_accepted_hours() do
+
+  def group_accepted_hours(%{admin: true}) do
     sql = """
     SELECT
       SUM((elem->>'hours')::float) AS total_hours,
@@ -289,7 +359,28 @@ defmodule Acap.Timesheets do
     weeks_starting_totals || []
   end
 
-  def group_draft_hours() do
+
+  def group_accepted_hours(%{id: user_id}) do
+    {:ok, user_id_binary} = Ecto.UUID.dump(user_id)
+    sql = """
+    SELECT
+      SUM((elem->>'hours')::float) AS total_hours,
+      week_starting
+    FROM timesheets,
+      LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+      AND timesheets.status = 'accepted'
+      AND timesheets.user_id = $1::uuid
+    GROUP BY week_starting
+    ORDER BY
+        week_starting DESC
+    """
+
+    {:ok, %Postgrex.Result{rows: weeks_starting_totals}} = Repo.query(sql,[user_id_binary])
+    weeks_starting_totals || []
+  end
+
+  def group_draft_hours(%{admnin: true}) do
     sql = """
     SELECT
       SUM((elem->>'hours')::float) AS total_hours,
@@ -307,7 +398,28 @@ defmodule Acap.Timesheets do
     weeks_starting_totals || []
   end
 
-  def group_submitted_hours() do
+  def group_draft_hours(%{id: user_id}) do
+    {:ok, user_id_binary} = Ecto.UUID.dump(user_id)
+
+    sql = """
+    SELECT
+      SUM((elem->>'hours')::float) AS total_hours,
+      week_starting
+    FROM timesheets,
+      LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+      AND timesheets.status = 'draft'
+      AND timesheets.user_id = $1::uuid
+    GROUP BY week_starting
+    ORDER BY
+        week_starting DESC
+    """
+
+    {:ok, %Postgrex.Result{rows: weeks_starting_totals}} = Repo.query(sql, [user_id_binary])
+    weeks_starting_totals || []
+  end
+
+  def group_submitted_hours(%{admin: true}) do
     sql = """
     SELECT
       SUM((elem->>'hours')::float) AS total_hours,
@@ -325,7 +437,28 @@ defmodule Acap.Timesheets do
     weeks_starting_totals || []
   end
 
-  def group_rejected_hours() do
+  def group_submitted_hours(%{id: user_id}) do
+    {:ok, user_id_binary} = Ecto.UUID.dump(user_id)
+
+    sql = """
+    SELECT
+      SUM((elem->>'hours')::float) AS total_hours,
+      week_starting
+    FROM timesheets,
+      LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+      AND timesheets.status = 'submitted'
+      AND timesheets.user_id = $1::uuid
+    GROUP BY week_starting
+    ORDER BY
+        week_starting DESC
+    """
+
+    {:ok, %Postgrex.Result{rows: weeks_starting_totals}} = Repo.query(sql,[user_id_binary])
+    weeks_starting_totals || []
+  end
+
+  def group_rejected_hours(%{admin: true}) do
     sql = """
     SELECT
       SUM((elem->>'hours')::float) AS total_hours,
@@ -340,6 +473,27 @@ defmodule Acap.Timesheets do
     """
 
     {:ok, %Postgrex.Result{rows: weeks_starting_totals}} = Repo.query(sql)
+    weeks_starting_totals || []
+  end
+
+  def group_rejected_hours(%{id: user_id}) do
+    {:ok, user_id_binary} = Ecto.UUID.dump(user_id)
+
+    sql = """
+    SELECT
+      SUM((elem->>'hours')::float) AS total_hours,
+      week_starting
+    FROM timesheets,
+      LATERAL jsonb_array_elements(entries) AS elem
+    WHERE elem->>'hours' IS NOT NULL
+      AND timesheets.status = 'rejected'
+      AND timesheets.user_id = $1::uuid
+    GROUP BY week_starting
+    ORDER BY
+        week_starting DESC
+    """
+
+    {:ok, %Postgrex.Result{rows: weeks_starting_totals}} = Repo.query(sql,[user_id_binary])
     weeks_starting_totals || []
   end
 end

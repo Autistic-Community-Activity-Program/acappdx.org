@@ -1,5 +1,4 @@
 <dl
-  :if={@current_user.admin}
   class="mb-12 grid grid-cols-1 gap-0.5 overflow-hidden shadow rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4"
 >
   <div class="flex flex-col bg-[#f2f3ff] p-8">
@@ -33,22 +32,18 @@
   </div>
 </dl>
 
-<div :if={@current_user.admin} class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
+<div  class="mb-4 p-4 border border-zinc-300 rounded-md shadow">
   <canvas class="h-96 mx-auto" id="myChart"></canvas>
 </div>
 
-<script :if={@current_user.admin} src="https://cdn.jsdelivr.net/npm/chart.js">
+<script src="https://cdn.jsdelivr.net/npm/chart.js">
 </script>
-<script :if={@current_user.admin}>
+<script>
   const ctx = document.getElementById('myChart');
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: [
-        <%= for data <- @weeks_starting_totals do %>
-        '<%= data |> List.last() |> NimbleStrftime.format("%m/%d/%y") %>',
-        <% end %>
-      ],
+
       datasets: [
       {
         label: 'Totals Of Draft',
