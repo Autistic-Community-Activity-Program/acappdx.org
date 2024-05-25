@@ -380,7 +380,9 @@ defmodule Acap.Timesheets do
     weeks_starting_totals || []
   end
 
-  def group_draft_hours(%{admnin: true}) do
+
+
+  def group_draft_hours(%{admin: true}) do
     sql = """
     SELECT
       SUM((elem->>'hours')::float) AS total_hours,

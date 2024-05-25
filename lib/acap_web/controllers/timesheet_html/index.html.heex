@@ -43,7 +43,11 @@
   new Chart(ctx, {
     type: 'bar',
     data: {
-
+      labels: [
+        <%= for data <- @weeks_starting_totals do %>
+        '<%= data |> List.last() |> NimbleStrftime.format("%m/%d/%y") %>',
+        <% end %>
+      ],
       datasets: [
       {
         label: 'Totals Of Draft',
